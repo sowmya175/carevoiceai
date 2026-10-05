@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: carevoice
+      POSTGRES_USER: carevoice
+      POSTGRES_PASSWORD: carevoice
+    ports:
+      - "5433:5432"
+    volumes:
+      - carevoice_pg:/var/lib/postgresql/data
+
+volumes:
+  carevoice_pg:

@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: carevoice-ai
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/carevoice}
+    username: ${DB_USERNAME:carevoice}
+    password: ${DB_PASSWORD:carevoice}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: ${CAREVOICE_VOICE_MAX_FILE_SIZE_MB:20}MB
+      max-request-size: ${CAREVOICE_VOICE_MAX_FILE_SIZE_MB:20}MB
+
+server:
+  port: ${PORT:8080}
+  tomcat:
+    max-http-form-post-size: ${CAREVOICE_VOICE_MAX_FILE_SIZE_MB:20}MB
+
+carevoice:
+  frontend:
+    origin: ${CAREVOICE_FRONTEND_ORIGIN:http://localhost:5173}
+  ai:
+    enabled: ${CAREVOICE_AI_ENABLED:false}
+    model: ${GEMINI_MODEL:gemini-3.8-flash}
+    adaptive-questions-enabled: ${CAREVOICE_ADAPTIVE_QUESTIONS_ENABLED:false}
+  voice:
+    enabled: ${CAREVOICE_VOICE_ENABLED:false}
+    provider: ${CAREVOICE_VOICE_PROVIDER:groq}
+    language: ${CAREVOICE_VOICE_LANGUAGE:en}
+    transcription-prompt: ${CAREVOICE_VOICE_TRANSCRIPTION_PROMPT:Daily patient health check-in. The speaker may answer symptom questions, including pain ratings from 0 to 10. Preserve spoken numbers accurately.}
+    gemini-transcription-model: ${GEMINI_TRANSCRIPTION_MODEL:gemini-3.5-transcribe}
+    max-file-size-mb: ${CAREVOICE_VOICE_MAX_FILE_SIZE_MB:20}
+    groq:
+      base-url: ${GROQ_BASE_URL:https://api.groq.com/openai/v1}
+      api-key: ${GROQ_API_KEY:}
+      model: ${GROQ_WHISPER_MODEL:whisper-large-v3-turbo}

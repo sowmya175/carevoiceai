@@ -1,0 +1,27 @@
+### Create a demo patient
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+  "displayName": "Demo Patient",
+  "monitoringPlan": "Post-discharge daily monitoring"
+}
+
+### Start a daily monitoring session (replace patient ID if needed)
+POST http://localhost:8080/api/monitoring/patients/1/sessions
+
+### Patient reports dizziness and pain
+POST http://localhost:8080/api/monitoring/sessions/1/messages
+Content-Type: application/json
+
+{
+  "transcript": "I feel dizzy today and my pain is 6 out of 10."
+}
+
+### Patient answers a follow-up
+POST http://localhost:8080/api/monitoring/sessions/1/messages
+Content-Type: application/json
+
+{
+  "transcript": "I did not faint or pass out."
+}

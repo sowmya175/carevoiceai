@@ -1,0 +1,23 @@
+# Backend build
+target/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
