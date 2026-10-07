@@ -1,0 +1,47 @@
+{
+  "patientId": 7,
+  "windowStart": "2026-10-01T09:00:00-04:00",
+  "windowEnd": "2026-10-01T09:00:00-04:00",
+  "sessionCount": 1,
+  "latestCheckInAt": "2026-10-01T09:00:00-04:00",
+  "pain": {
+    "observationCount": 1,
+    "firstValue": 2,
+    "latestValue": 2,
+    "change": 0,
+    "observations": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": 2}]
+  },
+  "sleep": {
+    "goodCount": 0, "normalCount": 0, "poorCount": 1, "unknownCount": 0,
+    "observations": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": "poor"}]
+  },
+  "appetite": {
+    "goodCount": 0, "normalCount": 0, "reducedCount": 1, "poorCount": 0, "unknownCount": 0,
+    "observations": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": "reduced"}]
+  },
+  "medication": {
+    "takenCount": 0, "missedCount": 1, "unknownCount": 0,
+    "observations": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": false}]
+  },
+  "symptoms": {
+    "dizziness": {
+      "reportedTrueCount": 1, "reportedFalseCount": 0, "unknownCount": 0,
+      "firstReportedAt": "2026-10-01T09:00:00-04:00",
+      "lastReportedAt": "2026-10-01T09:00:00-04:00",
+      "observations": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": true}]
+    },
+    "shortnessOfBreath": {
+      "reportedTrueCount": 0, "reportedFalseCount": 0, "unknownCount": 1,
+      "firstReportedAt": null, "lastReportedAt": null,
+      "observations": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": null}]
+    },
+    "lossOfConsciousness": {
+      "reportedTrueCount": 0, "reportedFalseCount": 1, "unknownCount": 0,
+      "firstReportedAt": null, "lastReportedAt": null,
+      "observations": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": false}]
+    }
+  },
+  "dizzinessOnset": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "onset": "This morning."}],
+  "temperature": [{"sessionId": 101, "timestamp": "2026-10-01T09:00:00-04:00", "value": 98.6}],
+  "sessions": [{"sessionId": 101, "startedAt": "2026-10-01T09:00:00-04:00", "status": "READY_FOR_REVIEW", "riskLevel": "YELLOW", "turnCount": 3}]
+}

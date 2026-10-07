@@ -5,6 +5,13 @@ export interface SavedCheckIn {
   sessionId: number;
 }
 
+export function knownPatientId(): number | null {
+  const saved = loadCheckIn();
+  if (saved) return saved.patientId;
+  const configured = Number(import.meta.env.VITE_PATIENT_ID);
+  return Number.isSafeInteger(configured) && configured > 0 ? configured : null;
+}
+
 export function loadCheckIn(): SavedCheckIn | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);

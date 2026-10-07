@@ -139,6 +139,14 @@ The response includes the transcript and the monitoring agent's next question. R
 
 Realtime microphone streaming, text-to-speech, and voice biomarkers are not implemented. Escalation stays deterministic.
 
+## Longitudinal patient analysis
+
+`GET /api/patients/{patientId}/longitudinal-summary?limit=30` returns deterministic,
+read-only summaries of the latest completed/reviewable check-ins (limit 1–100).
+See [API semantics and data sources](docs/longitudinal-analysis.md) and the
+[example response](docs/longitudinal-summary.example.json). Existing detailed
+history endpoints continue to provide the original Q&A.
+
 ## Important design rule
 
 Groq-hosted Whisper turns speech into text. Gemini turns that text into structured clinical facts. `QuestionPlannerAgent` and `EscalationEngine` stay deterministic so escalation can be reviewed, tested, versioned, and audited.

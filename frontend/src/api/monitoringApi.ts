@@ -1,4 +1,6 @@
 import type { ClinicalAgentResponse, SessionHistory, SessionStart, VoiceMonitoringResponse } from "../types/monitoring.ts";
+import type { PatientLongitudinalResponse } from "../types/longitudinal.ts";
+import { isLongitudinalResponse } from "./longitudinalResponse.ts";
 
 export class MonitoringApiError extends Error {
   readonly status: number;
@@ -78,13 +80,29 @@ export async function sendVoiceMessage(sessionId: number, audio: Blob): Promise<
   return body;
 }
 
-export async function fetchSessionHistory(sessionId: number): Promise<SessionHistory> {
+export async function fetchSessionHistory(sessionId: number, signal?: AbortSignal): Promise<SessionHistory> {
   const response = await fetch(`${apiBaseUrl()}/api/monitoring/sessions/${sessionId}/history`, {
     headers: { Accept: "application/json" },
+    cache: "no-store",
+    signal,
   });
   const body = await readJson(response);
   if (!response.ok || !isSessionHistory(body)) {
     throw new MonitoringApiError(response.status, "We couldn't restore your check-in. Please start again.");
+  }
+  return body;
+}
+
+export async function fetchLongitudinalSummary(patientId: number, signal?: AbortSignal): Promise<PatientLongitudinalResponse> {
+  const response = await fetch(`${apiBaseUrl()}/api/patients/${patientId}/longitudinal-summary?limit=30`, {
+    headers: { Accept: "application/json" }, cache: "no-store", signal,
+  });
+  const body = await readJson(response);
+  if (response.status === 404) {
+    throw new MonitoringApiError(404, "We couldn't find your patient history. Please return to Today's Check-In to reconnect.");
+  }
+  if (!response.ok || !isLongitudinalResponse(body) || body.patientId !== patientId) {
+    throw new MonitoringApiError(response.status, "We couldn't load your health history. Please try again.");
   }
   return body;
 }
@@ -169,7 +187,11 @@ function isSessionHistory(value: unknown): value is SessionHistory {
     && typeof value.patientId === "number"
     && typeof value.status === "string"
     && typeof value.conversationComplete === "boolean"
-    && Array.isArray(value.turns);
+    && typeof value.startedAt === "string" && Number.isFinite(Date.parse(value.startedAt))
+    && Array.isArray(value.turns) && value.turns.every((turn) => isRecord(turn)
+      && typeof turn.sequenceNumber === "number" && typeof turn.patientResponse === "string"
+      && (turn.question === null || typeof turn.question === "string")
+      && typeof turn.timestamp === "string" && Number.isFinite(Date.parse(turn.timestamp)));
 }
 
 function isVoiceResponse(value: unknown): value is VoiceMonitoringResponse {

@@ -20,4 +20,14 @@ public interface MonitoringTurnRepository extends JpaRepository<MonitoringTurn, 
             group by t.monitoringSession.id
             """)
     List<Object[]> countByPatient(@Param("patientId") Long patientId);
+
+    @Query("""
+            select t.monitoringSession.id, count(t)
+            from MonitoringTurn t
+            where t.patient.id = :patientId and t.monitoringSession.id in :sessionIds
+            group by t.monitoringSession.id
+            """)
+    List<Object[]> countByPatientAndSessionIds(
+            @Param("patientId") Long patientId,
+            @Param("sessionIds") List<Long> sessionIds);
 }

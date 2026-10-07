@@ -1,5 +1,37 @@
-import { describe, expect, it } from "vitest";
-import { messageForFailedResponse } from "./monitoringApi.ts";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { fetchLongitudinalSummary, fetchSessionHistory, messageForFailedResponse } from "./monitoringApi.ts";
+import { historySummary, jsonResponse, sessionHistory } from "../test/historyFixtures.ts";
+
+afterEach(() => vi.unstubAllGlobals());
+
+describe("history API", () => {
+  it("requests the bounded summary and disables caching", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse(historySummary())));
+    const signal = new AbortController().signal;
+    expect((await fetchLongitudinalSummary(7, signal)).medication.unknownCount).toBe(1);
+    expect(fetch).toHaveBeenCalledWith(expect.stringContaining("/api/patients/7/longitudinal-summary?limit=30"),
+      { headers: { Accept: "application/json" }, cache: "no-store", signal });
+  });
+
+  it("rejects partial, invalid and wrong-patient summaries instead of inventing values", async () => {
+    const invalid = historySummary(); invalid.pain.observations[0].value = 99;
+    for (const body of [{ patientId: 7 }, { ...historySummary(), medication: null }, { ...historySummary(), patientId: 99 }, invalid]) {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse(body)));
+      await expect(fetchLongitudinalSummary(7)).rejects.toThrow("We couldn't load your health history");
+    }
+  });
+
+  it("does not expose a server error body", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ error: "SECRET stack trace" }, 500)));
+    await expect(fetchLongitudinalSummary(7)).rejects.toThrow("We couldn't load your health history. Please try again.");
+  });
+
+  it("rejects malformed detailed history and disables caching", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ ...sessionHistory(), turns: [null] })));
+    await expect(fetchSessionHistory(103)).rejects.toThrow();
+    expect(fetch).toHaveBeenCalledWith(expect.stringContaining("/api/monitoring/sessions/103/history"), expect.objectContaining({ cache: "no-store" }));
+  });
+});
 
 describe("messageForFailedResponse", () => {
   it("uses a patient-friendly message for an unclear recording", () => {

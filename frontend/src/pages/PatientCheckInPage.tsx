@@ -12,15 +12,20 @@ import { CurrentQuestion } from "../components/CurrentQuestion.tsx";
 import { MonitoringStatus } from "../components/MonitoringStatus.tsx";
 import { TranscriptCard } from "../components/TranscriptCard.tsx";
 import { VoiceRecorder } from "../components/VoiceRecorder.tsx";
-import { clearCheckIn, loadCheckIn, saveCheckIn } from "../checkinStorage.ts";
+import { clearCheckIn, knownPatientId, loadCheckIn, saveCheckIn } from "../checkinStorage.ts";
 import { formatElapsed } from "../hooks/recordingMime.ts";
 import { useVoiceRecorder } from "../hooks/useVoiceRecorder.ts";
 import type { ClinicalAgentResponse, ConversationTurn, SessionHistory, SessionStatus } from "../types/monitoring.ts";
 
-export function PatientCheckInPage() {
+export function PatientCheckInPage({ onPatientChange, onNavigationLockChange, onViewHistory, onViewResponses }: {
+  onPatientChange?: (id: number | null) => void;
+  onNavigationLockChange?: (locked: boolean) => void;
+  onViewHistory?: () => void;
+  onViewResponses?: (sessionId: number) => void;
+} = {}) {
   const recorder = useVoiceRecorder();
   const [started, setStarted] = useState(false);
-  const [patientId, setPatientId] = useState<number | null>(null);
+  const [patientId, setPatientId] = useState<number | null>(knownPatientId);
   const [sessionId, setSessionId] = useState<number | null>(null);
   const [turns, setTurns] = useState<ConversationTurn[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
@@ -30,6 +35,10 @@ export function PatientCheckInPage() {
   const [pageError, setPageError] = useState<string | null>(null);
   const [showText, setShowText] = useState(false);
   const [textDraft, setTextDraft] = useState("");
+
+  const navigationLocked = busy || recorder.state === "recording" || recorder.state === "uploading";
+  useEffect(() => { onPatientChange?.(patientId); }, [patientId, onPatientChange]);
+  useEffect(() => { onNavigationLockChange?.(navigationLocked); }, [navigationLocked, onNavigationLockChange]);
 
   useEffect(() => {
     const saved = loadCheckIn();
@@ -47,6 +56,8 @@ export function PatientCheckInPage() {
           clearCheckIn();
           return;
         }
+        // Remove any legacy stored conversation fields before displaying restored history.
+        saveCheckIn({ patientId: history.patientId, sessionId: history.sessionId });
         setPatientId(history.patientId);
         setSessionId(history.sessionId);
         setStatus(history.status);
@@ -169,12 +180,15 @@ export function PatientCheckInPage() {
     : recorder.state === "uploading" || busy
       ? "Processing your response..."
       : null;
+  const answeredCount = turns.filter((turn) => turn.speaker === "patient").length;
 
   return (
     <main className="check-in">
       <header>
-        <h1>CareVoice</h1>
-        <p className="subtitle">Daily Health Check-In</p>
+        <p className="eyebrow">A moment for you</p>
+        <h1>Today's Check-In</h1>
+        <p className="subtitle">Share how you've been feeling, in your own words.</p>
+        {onViewHistory && <button type="button" className="secondary history-link" onClick={onViewHistory} disabled={navigationLocked}>View History</button>}
       </header>
       {pageError ? <p className="error" role="alert">{pageError}</p> : null}
       {!started ? (
@@ -183,12 +197,14 @@ export function PatientCheckInPage() {
         </button>
       ) : (
         <>
+          <p className="response-progress" aria-live="polite">{answeredCount} {answeredCount === 1 ? "response" : "responses"} saved{conversationComplete ? " · Check-in complete" : " · Check-in in progress"}</p>
           <CurrentQuestion question={conversationComplete ? null : currentQuestion} />
           <TranscriptCard turns={turns} />
           <MonitoringStatus message={statusMessage} />
           {conversationComplete ? (
             <>
-              <CheckInComplete status={status} />
+              <CheckInComplete status={status} onViewHistory={onViewHistory}
+                onViewResponses={sessionId !== null && onViewResponses ? () => onViewResponses(sessionId) : undefined} />
               <button type="button" className="secondary" onClick={startAnother}>
                 Start another check-in
               </button>
