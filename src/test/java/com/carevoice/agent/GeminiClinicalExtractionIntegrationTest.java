@@ -1,4 +1,9 @@
 package com.carevoice.agent;
+import com.carevoice.integration.gemini.ClinicalExtractionPrompt;
+import com.carevoice.service.ClinicalExtractionValidator;
+import com.carevoice.service.ExtractedClinicalFacts;
+import com.carevoice.integration.gemini.GeminiClinicalExtractionService;
+import com.carevoice.service.MonitoringSessionContext;
 
 import com.carevoice.config.CareVoiceAiProperties;
 import com.google.genai.Client;

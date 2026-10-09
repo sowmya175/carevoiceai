@@ -1,10 +1,10 @@
 package com.carevoice.config;
 
-import com.carevoice.wording.AdaptiveQuestionWordingService;
-import com.carevoice.wording.DeterministicQuestionWordingService;
-import com.carevoice.wording.GeminiQuestionWordingService;
-import com.carevoice.wording.QuestionWordingService;
-import com.carevoice.wording.QuestionWordingValidator;
+import com.carevoice.service.AdaptiveQuestionWordingService;
+import com.carevoice.service.DeterministicQuestionWordingService;
+import com.carevoice.integration.gemini.GeminiQuestionWordingService;
+import com.carevoice.service.QuestionWordingService;
+import com.carevoice.service.QuestionWordingValidator;
 import com.google.genai.Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

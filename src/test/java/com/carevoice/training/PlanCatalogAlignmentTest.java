@@ -1,7 +1,7 @@
 package com.carevoice.training;
 
-import com.carevoice.condition.MonitoringFieldCatalogService;
-import com.carevoice.condition.MonitoringFieldCatalogService.CatalogField;
+import com.carevoice.service.MonitoringFieldCatalogService;
+import com.carevoice.service.MonitoringFieldCatalogService.CatalogField;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

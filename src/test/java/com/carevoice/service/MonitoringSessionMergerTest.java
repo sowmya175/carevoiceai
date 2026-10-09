@@ -1,6 +1,5 @@
 package com.carevoice.service;
 
-import com.carevoice.agent.ExtractedClinicalFacts;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.Patient;
 import org.junit.jupiter.api.Test;

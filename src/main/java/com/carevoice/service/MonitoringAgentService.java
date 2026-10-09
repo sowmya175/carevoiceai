@@ -1,6 +1,5 @@
 package com.carevoice.service;
 
-import com.carevoice.checkin.DailyCheckInService;
 import com.carevoice.domain.MonitoringSession;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,7 @@
 package com.carevoice.auth;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
 
 import com.carevoice.domain.Patient;
 import com.carevoice.repository.PatientRepository;

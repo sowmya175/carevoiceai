@@ -1,8 +1,10 @@
 package com.carevoice.condition;
+import com.carevoice.service.MonitoringFieldCatalogSeeder;
+import com.carevoice.service.MonitoringFieldCatalogService;
 
-import com.carevoice.auth.AccountRole;
-import com.carevoice.auth.UserAccount;
-import com.carevoice.auth.UserAccountRepository;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
 import com.carevoice.domain.MonitoringCategory;
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.MonitoringFieldRuntimeSupport;

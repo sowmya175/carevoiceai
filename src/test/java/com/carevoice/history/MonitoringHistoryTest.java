@@ -1,11 +1,17 @@
 package com.carevoice.history;
+import com.carevoice.service.ClinicalNoteAttacher;
+import com.carevoice.service.ClinicalNoteGenerationListener;
+import com.carevoice.service.ClinicalNoteRequested;
+import com.carevoice.service.ExtractedFactsJson;
+import com.carevoice.integration.gemini.GeminiClinicalNoteService;
+import com.carevoice.service.MonitoringHistoryQuery;
 
-import com.carevoice.agent.ExtractedClinicalFacts;
-import com.carevoice.agent.MissingInformationAnalyzer;
-import com.carevoice.agent.QuestionPlannerAgent;
-import com.carevoice.agent.RuleBasedClinicalExtractionService;
-import com.carevoice.api.MonitoringHistoryController;
-import com.carevoice.config.ApiExceptionHandler;
+import com.carevoice.service.ExtractedClinicalFacts;
+import com.carevoice.service.MissingInformationAnalyzer;
+import com.carevoice.service.QuestionPlannerAgent;
+import com.carevoice.service.RuleBasedClinicalExtractionService;
+import com.carevoice.controller.MonitoringHistoryController;
+import com.carevoice.exception.ApiExceptionHandler;
 import com.carevoice.config.CareVoiceVoiceProperties;
 import com.carevoice.domain.ClinicalNote;
 import com.carevoice.domain.InputMode;

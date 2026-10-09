@@ -1,4 +1,12 @@
 package com.carevoice.agent;
+import com.carevoice.service.ClinicalExtractionValidator;
+import com.carevoice.service.CollectedFacts;
+import com.carevoice.service.ExtractedClinicalFacts;
+import com.carevoice.domain.MonitoringField;
+import com.carevoice.service.MonitoringSessionContext;
+import com.carevoice.domain.RiskLevel;
+import com.carevoice.service.RuleBasedClinicalExtractionService;
+import com.carevoice.domain.SessionStatus;
 
 import com.carevoice.domain.*;
 import org.junit.jupiter.api.Test;

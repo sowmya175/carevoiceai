@@ -1,4 +1,8 @@
 package com.carevoice.longitudinal;
+import com.carevoice.service.LongitudinalAnalysisService;
+import com.carevoice.domain.Patient;
+import com.carevoice.dto.monitoring.PatientLongitudinalResponse;
+import com.carevoice.domain.SessionFactsSnapshot;
 
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;

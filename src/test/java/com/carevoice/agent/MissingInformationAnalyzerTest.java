@@ -1,8 +1,10 @@
 package com.carevoice.agent;
+import com.carevoice.service.CollectedFacts;
+import com.carevoice.service.MissingInformationAnalyzer;
 
 import com.carevoice.domain.MonitoringField;
-import com.carevoice.plan.DemoMonitoringPlans;
-import com.carevoice.plan.PlanField;
+import com.carevoice.service.DemoMonitoringPlans;
+import com.carevoice.domain.PlanField;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

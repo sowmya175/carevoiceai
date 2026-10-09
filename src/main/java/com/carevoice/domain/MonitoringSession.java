@@ -1,6 +1,5 @@
 package com.carevoice.domain;
 
-import com.carevoice.plan.PlanField;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

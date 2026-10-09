@@ -1,19 +1,22 @@
 package com.carevoice.training;
+import com.carevoice.training.PlanTrainingCorpus.Dataset;
+import com.carevoice.training.PlanGenerationEvaluator.EvaluationReport;
+import com.carevoice.training.PlanEvaluationGate.PromotionDecision;
+import com.carevoice.training.PlanDatasetSplitter.Splits;
+import com.carevoice.integration.vertex.TuningJobGateway;
+import com.carevoice.integration.vertex.VertexTuningJobGateway;
 
 import com.carevoice.config.CareVoicePlanAiProperties;
-import com.carevoice.proposal.DeterministicPlanGenerationModel;
-import com.carevoice.proposal.PlanGenerationModel;
-import com.carevoice.proposal.PlanTaskContract;
-import com.carevoice.proposal.VertexTunedPlanGenerationModel;
+import com.carevoice.service.DeterministicPlanGenerationModel;
+import com.carevoice.service.PlanGenerationModel;
+import com.carevoice.service.PlanTaskContract;
+import com.carevoice.integration.vertex.VertexTunedPlanGenerationModel;
 import com.google.genai.Client;
 import com.google.genai.types.HttpOptions;
 import com.google.genai.types.HttpRetryOptions;
-import com.carevoice.training.PlanDatasetSplitter.Splits;
-import com.carevoice.training.PlanEvaluationGate.PromotionDecision;
-import com.carevoice.training.PlanGenerationEvaluator.EvaluationReport;
-import com.carevoice.training.PlanTrainingCorpus.Dataset;
-import com.carevoice.training.TuningJobGateway.SubmittedJob;
-import com.carevoice.training.TuningJobGateway.TuningSubmission;
+
+import com.carevoice.integration.vertex.TuningJobGateway.SubmittedJob;
+import com.carevoice.integration.vertex.TuningJobGateway.TuningSubmission;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 

@@ -1,8 +1,9 @@
 package com.carevoice.condition;
+import com.carevoice.service.PatientConditionBootstrap;
 
-import com.carevoice.auth.AccountRole;
-import com.carevoice.auth.UserAccount;
-import com.carevoice.auth.UserAccountRepository;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
 import com.carevoice.domain.MonitoringCategory;
 import com.carevoice.domain.Patient;
 import com.carevoice.repository.PatientConditionRepository;

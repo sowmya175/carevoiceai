@@ -1,13 +1,21 @@
 package com.carevoice.voice;
+import com.carevoice.exception.AudioTranscriptionException;
+import com.carevoice.exception.BlankTranscriptionException;
+import com.carevoice.integration.groq.GroqWhisperAudioTranscriptionService;
+import com.carevoice.service.TranscriptionPrompt;
+import com.carevoice.service.TranscriptionResult;
+import com.carevoice.service.VoiceMonitoringService;
+import com.carevoice.exception.VoiceUploadException;
+import com.carevoice.service.VoiceUploadValidator;
 
-import com.carevoice.api.VoiceMonitoringController;
-import com.carevoice.config.ApiExceptionHandler;
+import com.carevoice.controller.VoiceMonitoringController;
+import com.carevoice.exception.ApiExceptionHandler;
 import com.carevoice.config.CareVoiceVoiceProperties;
 import com.carevoice.config.GroqConfiguration;
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.Patient;
-import com.carevoice.history.MonitoringResponseService;
+import com.carevoice.service.MonitoringResponseService;
 import com.carevoice.repository.MonitoringSessionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;

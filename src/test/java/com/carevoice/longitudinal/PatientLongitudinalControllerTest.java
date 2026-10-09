@@ -1,7 +1,10 @@
 package com.carevoice.longitudinal;
+import com.carevoice.service.LongitudinalAnalysisService;
+import com.carevoice.domain.Patient;
+import com.carevoice.domain.SessionFactsSnapshot;
 
-import com.carevoice.api.PatientLongitudinalController;
-import com.carevoice.config.ApiExceptionHandler;
+import com.carevoice.controller.PatientLongitudinalController;
+import com.carevoice.exception.ApiExceptionHandler;
 import com.carevoice.config.CareVoiceVoiceProperties;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;

@@ -1,9 +1,10 @@
 package com.carevoice.training;
-
-import com.carevoice.proposal.DeterministicPlanGenerationModel;
-import com.carevoice.training.PlanDatasetSplitter.Splits;
-import com.carevoice.training.PlanGenerationEvaluator.EvaluationReport;
 import com.carevoice.training.PlanTrainingCorpus.Dataset;
+import com.carevoice.training.PlanGenerationEvaluator.EvaluationReport;
+import com.carevoice.training.PlanDatasetSplitter.Splits;
+
+import com.carevoice.service.DeterministicPlanGenerationModel;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 

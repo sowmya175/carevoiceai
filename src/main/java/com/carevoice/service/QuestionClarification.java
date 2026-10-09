@@ -1,7 +1,6 @@
 package com.carevoice.service;
 
 import com.carevoice.domain.MonitoringField;
-import com.carevoice.agent.CollectedFacts;
 
 public final class QuestionClarification {
     public static final String PAIN_SCORE =

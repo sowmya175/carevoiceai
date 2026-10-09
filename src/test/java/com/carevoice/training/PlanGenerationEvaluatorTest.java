@@ -1,11 +1,12 @@
 package com.carevoice.training;
-
-import com.carevoice.proposal.DeterministicPlanGenerationModel;
-import com.carevoice.proposal.PlanGenerationModel;
-import com.carevoice.proposal.PlanGenerationModel.GeneratedQuestion;
-import com.carevoice.proposal.PlanGenerationModel.PlanGenerationResult;
-import com.carevoice.training.PlanGenerationEvaluator.EvaluationReport;
 import com.carevoice.training.PlanTrainingCorpus.Dataset;
+import com.carevoice.training.PlanGenerationEvaluator.EvaluationReport;
+
+import com.carevoice.service.DeterministicPlanGenerationModel;
+import com.carevoice.service.PlanGenerationModel;
+import com.carevoice.service.PlanGenerationModel.GeneratedQuestion;
+import com.carevoice.service.PlanGenerationModel.PlanGenerationResult;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

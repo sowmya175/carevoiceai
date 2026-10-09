@@ -1,8 +1,9 @@
 package com.carevoice.plan;
+import com.carevoice.service.DemoMonitoringPlans;
 
-import com.carevoice.auth.AccountRole;
-import com.carevoice.auth.UserAccount;
-import com.carevoice.auth.UserAccountRepository;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.SessionStatus;

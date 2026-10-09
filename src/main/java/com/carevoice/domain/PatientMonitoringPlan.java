@@ -1,6 +1,5 @@
 package com.carevoice.domain;
 
-import com.carevoice.auth.UserAccount;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

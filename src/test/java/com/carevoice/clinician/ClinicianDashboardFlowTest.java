@@ -1,8 +1,10 @@
 package com.carevoice.clinician;
+import com.carevoice.training.PlanExample.Review;
+import com.carevoice.domain.Patient;
 
-import com.carevoice.auth.AccountRole;
-import com.carevoice.auth.UserAccount;
-import com.carevoice.auth.UserAccountRepository;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
 import com.carevoice.checkin.MutableClock;
 import com.carevoice.domain.ClinicalNote;
 import com.carevoice.domain.InputMode;
@@ -10,9 +12,9 @@ import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.MonitoringTurn;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;
-import com.carevoice.history.ExtractedFactsJson;
-import com.carevoice.agent.ExtractedClinicalFacts;
-import com.carevoice.plan.DemoMonitoringPlans;
+import com.carevoice.service.ExtractedFactsJson;
+import com.carevoice.service.ExtractedClinicalFacts;
+import com.carevoice.service.DemoMonitoringPlans;
 import com.carevoice.repository.ClinicalNoteRepository;
 import com.carevoice.repository.MonitoringPlanRepository;
 import com.carevoice.repository.MonitoringSessionRepository;

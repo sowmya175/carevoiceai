@@ -1,7 +1,13 @@
 package com.carevoice.wording;
+import com.carevoice.service.AdaptiveQuestionWordingService;
+import com.carevoice.service.DeterministicQuestionWordingService;
+import com.carevoice.integration.gemini.GeminiQuestionWordingService;
+import com.carevoice.service.QuestionContext;
+import com.carevoice.exception.QuestionWordingException;
+import com.carevoice.service.QuestionWordingValidator;
 
-import com.carevoice.agent.CollectedFacts;
-import com.carevoice.agent.PlannedQuestion;
+import com.carevoice.service.CollectedFacts;
+import com.carevoice.service.PlannedQuestion;
 import com.carevoice.config.CareVoiceAiProperties;
 import com.carevoice.domain.MonitoringField;
 import com.google.genai.Client;

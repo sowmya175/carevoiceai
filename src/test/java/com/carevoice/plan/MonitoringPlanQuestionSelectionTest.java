@@ -1,8 +1,9 @@
 package com.carevoice.plan;
+import com.carevoice.service.DemoMonitoringPlans;
 
-import com.carevoice.agent.MissingInformationAnalyzer;
-import com.carevoice.agent.QuestionPlannerAgent;
-import com.carevoice.agent.RuleBasedClinicalExtractionService;
+import com.carevoice.service.MissingInformationAnalyzer;
+import com.carevoice.service.QuestionPlannerAgent;
+import com.carevoice.service.RuleBasedClinicalExtractionService;
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.MonitoringPlan;
 import com.carevoice.domain.MonitoringSession;
@@ -11,7 +12,7 @@ import com.carevoice.repository.MonitoringSessionRepository;
 import com.carevoice.service.ClinicalMonitoringAgent;
 import com.carevoice.service.EscalationEngine;
 import com.carevoice.service.MonitoringSessionMerger;
-import com.carevoice.wording.QuestionWordingService;
+import com.carevoice.service.QuestionWordingService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -44,7 +45,7 @@ class MonitoringPlanQuestionSelectionTest {
         assertThat(response.nextQuestion()).isEqualTo("How is the pain from your recovery feeling today?");
     }
 
-    private static com.carevoice.agent.ClinicalAgentResponse ask(
+    private static com.carevoice.dto.monitoring.ClinicalAgentResponse ask(
             DemoMonitoringPlans.Template template,
             QuestionWordingService wording) {
         MonitoringSession session = new MonitoringSession(new Patient("Sarah", "Daily monitoring"));

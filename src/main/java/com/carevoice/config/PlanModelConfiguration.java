@@ -1,7 +1,7 @@
 package com.carevoice.config;
 
-import com.carevoice.proposal.GeminiPlanGenerationModel;
-import com.carevoice.proposal.VertexTunedPlanGenerationModel;
+import com.carevoice.integration.gemini.GeminiPlanGenerationModel;
+import com.carevoice.integration.vertex.VertexTunedPlanGenerationModel;
 import com.google.genai.Client;
 import com.google.genai.types.HttpOptions;
 import com.google.genai.types.HttpRetryOptions;

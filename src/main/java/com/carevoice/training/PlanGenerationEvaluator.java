@@ -1,15 +1,15 @@
 package com.carevoice.training;
-
-import com.carevoice.proposal.PlanGenerationModel;
-import com.carevoice.proposal.PlanGenerationModel.AllowedFieldInput;
-import com.carevoice.proposal.PlanGenerationModel.ConditionInput;
-import com.carevoice.proposal.PlanGenerationModel.ExistingPlanInput;
-import com.carevoice.proposal.PlanGenerationModel.GeneratedQuestion;
-import com.carevoice.proposal.PlanGenerationModel.PatientPlanGenerationContext;
-import com.carevoice.proposal.PlanGenerationModel.PlanGenerationResult;
 import com.carevoice.training.PlanExample.TrainingCondition;
 import com.carevoice.training.PlanExample.TrainingField;
 import com.carevoice.training.PlanExample.TrainingQuestion;
+
+import com.carevoice.service.PlanGenerationModel;
+import com.carevoice.service.PlanGenerationModel.AllowedFieldInput;
+import com.carevoice.service.PlanGenerationModel.ConditionInput;
+import com.carevoice.service.PlanGenerationModel.ExistingPlanInput;
+import com.carevoice.service.PlanGenerationModel.GeneratedQuestion;
+import com.carevoice.service.PlanGenerationModel.PatientPlanGenerationContext;
+import com.carevoice.service.PlanGenerationModel.PlanGenerationResult;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;

@@ -1,12 +1,20 @@
 package com.carevoice.proposal;
+import com.carevoice.service.GenerationMetadata;
+import com.carevoice.exception.PlanGenerationFailedException;
+import com.carevoice.service.PlanGenerationModel;
+import com.carevoice.service.PlanGenerationTrace;
+import com.carevoice.service.PlanModelRouter;
+import com.carevoice.service.PlanOutputGate;
+import com.carevoice.service.PlanTaskContract;
+import com.carevoice.integration.vertex.VertexTunedPlanGenerationModel;
 
 import com.carevoice.config.CareVoicePlanAiProperties;
 import com.carevoice.domain.MonitoringCategory;
-import com.carevoice.proposal.PlanGenerationModel.ConditionInput;
-import com.carevoice.proposal.PlanGenerationModel.ExistingPlanInput;
-import com.carevoice.proposal.PlanGenerationModel.GeneratedQuestion;
-import com.carevoice.proposal.PlanGenerationModel.PatientPlanGenerationContext;
-import com.carevoice.proposal.PlanGenerationModel.PlanGenerationResult;
+import com.carevoice.service.PlanGenerationModel.ConditionInput;
+import com.carevoice.service.PlanGenerationModel.ExistingPlanInput;
+import com.carevoice.service.PlanGenerationModel.GeneratedQuestion;
+import com.carevoice.service.PlanGenerationModel.PatientPlanGenerationContext;
+import com.carevoice.service.PlanGenerationModel.PlanGenerationResult;
 import com.carevoice.training.PlanExample;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,6 @@
 package com.carevoice.voice;
+import com.carevoice.integration.gemini.GeminiAudioTranscriptionService;
+import com.carevoice.service.TranscriptionResult;
 
 import com.carevoice.config.CareVoiceVoiceProperties;
 import com.google.genai.Client;

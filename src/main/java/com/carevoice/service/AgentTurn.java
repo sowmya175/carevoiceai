@@ -1,6 +1,5 @@
 package com.carevoice.service;
 
-import com.carevoice.agent.ClinicalAgentResponse;
-import com.carevoice.agent.ExtractedClinicalFacts;
+import com.carevoice.dto.monitoring.ClinicalAgentResponse;
 
 public record AgentTurn(ClinicalAgentResponse response, ExtractedClinicalFacts extractedFacts) {}

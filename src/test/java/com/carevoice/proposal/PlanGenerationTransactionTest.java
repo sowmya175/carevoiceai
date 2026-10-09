@@ -1,12 +1,19 @@
 package com.carevoice.proposal;
+import com.carevoice.service.ActivePlanGenerationModel;
+import com.carevoice.service.GenerationMetadata;
+import com.carevoice.service.MonitoringPlanProposalService;
+import com.carevoice.domain.Patient;
+import com.carevoice.exception.PlanGenerationFailedException;
+import com.carevoice.service.PlanGenerationTrace;
+import com.carevoice.mapper.ProposalViews;
 
-import com.carevoice.auth.AccountRole;
-import com.carevoice.auth.UserAccount;
-import com.carevoice.auth.UserAccountRepository;
-import com.carevoice.proposal.PlanGenerationModel.GeneratedQuestion;
-import com.carevoice.proposal.PlanGenerationModel.PatientPlanGenerationContext;
-import com.carevoice.proposal.PlanGenerationModel.PlanGenerationResult;
-import com.carevoice.proposal.PlanTaskContract;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
+import com.carevoice.service.PlanGenerationModel.GeneratedQuestion;
+import com.carevoice.service.PlanGenerationModel.PatientPlanGenerationContext;
+import com.carevoice.service.PlanGenerationModel.PlanGenerationResult;
+import com.carevoice.service.PlanTaskContract;
 import com.carevoice.repository.MonitoringPlanProposalRepository;
 import com.carevoice.repository.PatientConditionRepository;
 import com.carevoice.repository.PatientRepository;

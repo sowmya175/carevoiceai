@@ -1,9 +1,10 @@
 package com.carevoice.training;
-
-import com.carevoice.proposal.PlanGenerationJson;
-import com.carevoice.proposal.PlanGenerationPrompt;
-import com.carevoice.proposal.PlanTaskContract;
 import com.carevoice.training.PlanTrainingCorpus.Dataset;
+
+import com.carevoice.service.PlanGenerationJson;
+import com.carevoice.service.PlanGenerationPrompt;
+import com.carevoice.service.PlanTaskContract;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

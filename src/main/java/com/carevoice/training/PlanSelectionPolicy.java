@@ -1,7 +1,7 @@
 package com.carevoice.training;
+import com.carevoice.training.PlanExample.TrainingQuestion;
 
 import com.carevoice.domain.MonitoringCategory;
-import com.carevoice.training.PlanExample.TrainingQuestion;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

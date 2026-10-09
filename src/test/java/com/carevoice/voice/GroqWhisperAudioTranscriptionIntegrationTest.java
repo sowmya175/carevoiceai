@@ -1,4 +1,6 @@
 package com.carevoice.voice;
+import com.carevoice.integration.groq.GroqWhisperAudioTranscriptionService;
+import com.carevoice.service.TranscriptionResult;
 
 import com.carevoice.config.CareVoiceVoiceProperties;
 import com.carevoice.config.GroqConfiguration;

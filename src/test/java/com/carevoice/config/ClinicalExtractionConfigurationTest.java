@@ -1,12 +1,12 @@
 package com.carevoice.config;
 
-import com.carevoice.agent.ClinicalExtractionPrompt;
-import com.carevoice.agent.ClinicalExtractionRoutingPolicy;
-import com.carevoice.agent.ClinicalExtractionService;
-import com.carevoice.agent.ClinicalExtractionValidator;
-import com.carevoice.agent.FallbackClinicalExtractionService;
-import com.carevoice.agent.GeminiClinicalExtractionService;
-import com.carevoice.agent.RuleBasedClinicalExtractionService;
+import com.carevoice.integration.gemini.ClinicalExtractionPrompt;
+import com.carevoice.service.ClinicalExtractionRoutingPolicy;
+import com.carevoice.service.ClinicalExtractionService;
+import com.carevoice.service.ClinicalExtractionValidator;
+import com.carevoice.service.FallbackClinicalExtractionService;
+import com.carevoice.integration.gemini.GeminiClinicalExtractionService;
+import com.carevoice.service.RuleBasedClinicalExtractionService;
 import com.google.genai.Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

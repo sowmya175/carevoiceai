@@ -1,24 +1,16 @@
 package com.carevoice.service;
 
-import com.carevoice.agent.ClinicalAgentResponse;
-import com.carevoice.agent.ClinicalExtractionService;
-import com.carevoice.agent.CollectedFacts;
-import com.carevoice.agent.ExtractedClinicalFacts;
-import com.carevoice.agent.MissingInformationAnalyzer;
-import com.carevoice.agent.MonitoringSessionContext;
-import com.carevoice.agent.PlannedQuestion;
-import com.carevoice.agent.QuestionPlannerAgent;
+import com.carevoice.dto.monitoring.ClinicalAgentResponse;
+
 import com.carevoice.domain.MonitoringField;
-import com.carevoice.plan.PlanField;
-import com.carevoice.plan.SessionMonitoringPlan;
+import com.carevoice.domain.PlanField;
+
 import java.util.ArrayList;
-import com.carevoice.wording.DeterministicQuestionWordingService;
-import com.carevoice.wording.QuestionContext;
-import com.carevoice.wording.QuestionWordingService;
+
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;
-import com.carevoice.observability.VoiceTiming;
+
 import com.carevoice.repository.MonitoringSessionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,11 @@
 package com.carevoice.agent;
+import com.carevoice.service.ClinicalExtractionRoutingPolicy;
+import com.carevoice.service.CollectedFacts;
+import com.carevoice.service.ExtractedClinicalFacts;
+import com.carevoice.service.FallbackClinicalExtractionService;
+import com.carevoice.integration.gemini.GeminiClinicalExtractionService;
+import com.carevoice.service.MonitoringSessionContext;
+import com.carevoice.service.RuleBasedClinicalExtractionService;
 
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.RiskLevel;

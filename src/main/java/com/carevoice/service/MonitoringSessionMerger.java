@@ -1,6 +1,5 @@
 package com.carevoice.service;
 
-import com.carevoice.agent.ExtractedClinicalFacts;
 import com.carevoice.domain.MonitoringSession;
 import org.springframework.stereotype.Component;
 

@@ -1,15 +1,15 @@
 package com.carevoice.training;
-
-import com.carevoice.domain.MonitoringCategory;
+import com.carevoice.training.PlanTrainingCatalog.CatalogMode;
+import com.carevoice.training.PlanSelectionPolicy.DraftCondition;
 import com.carevoice.training.PlanExample.Review;
+import com.carevoice.training.PlanSelectionPolicy.Selection;
 import com.carevoice.training.PlanExample.TrainingCondition;
 import com.carevoice.training.PlanExample.TrainingExistingPlan;
 import com.carevoice.training.PlanExample.TrainingField;
 import com.carevoice.training.PlanExample.TrainingInput;
 import com.carevoice.training.PlanExample.TrainingOutput;
-import com.carevoice.training.PlanSelectionPolicy.DraftCondition;
-import com.carevoice.training.PlanSelectionPolicy.Selection;
-import com.carevoice.training.PlanTrainingCatalog.CatalogMode;
+
+import com.carevoice.domain.MonitoringCategory;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

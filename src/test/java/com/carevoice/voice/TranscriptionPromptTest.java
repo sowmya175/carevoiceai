@@ -1,4 +1,5 @@
 package com.carevoice.voice;
+import com.carevoice.service.TranscriptionPrompt;
 
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.MonitoringSession;

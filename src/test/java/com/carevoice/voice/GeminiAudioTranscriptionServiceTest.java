@@ -1,4 +1,8 @@
 package com.carevoice.voice;
+import com.carevoice.integration.gemini.GeminiAudioTranscriptionService.UploadedAudio;
+import com.carevoice.exception.AudioTranscriptionException;
+import com.carevoice.integration.gemini.GeminiAudioTranscriptionService;
+import com.carevoice.service.TranscriptionResult;
 
 import com.google.genai.errors.ApiException;
 import com.google.genai.gaos.models.interactions.AudioContent;
@@ -64,12 +68,12 @@ class GeminiAudioTranscriptionServiceTest {
         }
 
         @Override
-        UploadedAudio uploadAudio(byte[] audio, String contentType) {
+        public UploadedAudio uploadAudio(byte[] audio, String contentType) {
             return new UploadedAudio("files/unit-test", "https://example.invalid/audio");
         }
 
         @Override
-        String requestTranscript(UploadedAudio uploaded, String contentType) {
+        public String requestTranscript(UploadedAudio uploaded, String contentType) {
             if (fail) {
                 throw new ApiException(500, "INTERNAL", "secret body");
             }
@@ -77,7 +81,7 @@ class GeminiAudioTranscriptionServiceTest {
         }
 
         @Override
-        void deleteRemoteFile(String name) {
+        public void deleteRemoteFile(String name) {
             deletedName = name;
         }
     }

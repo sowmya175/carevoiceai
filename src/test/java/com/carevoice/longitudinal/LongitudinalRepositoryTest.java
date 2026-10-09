@@ -1,7 +1,22 @@
 package com.carevoice.longitudinal;
+import com.carevoice.domain.ClinicalNote;
+import com.carevoice.repository.ClinicalNoteRepository;
+import com.carevoice.domain.InputMode;
+import com.carevoice.service.LongitudinalAnalysisService;
+import com.carevoice.domain.MonitoringPlan;
+import com.carevoice.domain.MonitoringSession;
+import com.carevoice.repository.MonitoringSessionRepository;
+import com.carevoice.domain.MonitoringTurn;
+import com.carevoice.repository.MonitoringTurnRepository;
+import com.carevoice.domain.Patient;
+import com.carevoice.dto.monitoring.PatientLongitudinalResponse;
+import com.carevoice.repository.PatientRepository;
+import com.carevoice.domain.RiskLevel;
+import com.carevoice.domain.SessionPlanQuestion;
+import com.carevoice.domain.SessionStatus;
 
 import com.carevoice.domain.*;
-import com.carevoice.history.MonitoringHistoryQuery;
+import com.carevoice.service.MonitoringHistoryQuery;
 import com.carevoice.repository.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

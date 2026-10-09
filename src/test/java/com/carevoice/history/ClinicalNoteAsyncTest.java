@@ -1,6 +1,8 @@
 package com.carevoice.history;
+import com.carevoice.service.DeterministicClinicalNoteService;
+import com.carevoice.service.MonitoringResponseService;
 
-import com.carevoice.agent.ClinicalAgentResponse;
+import com.carevoice.dto.monitoring.ClinicalAgentResponse;
 import com.carevoice.domain.ClinicalNote;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.Patient;

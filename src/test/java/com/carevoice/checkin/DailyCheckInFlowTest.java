@@ -1,11 +1,13 @@
 package com.carevoice.checkin;
+import com.carevoice.service.DailyCheckInService;
+import com.carevoice.domain.Patient;
 
-import com.carevoice.auth.AccountRole;
-import com.carevoice.auth.UserAccount;
-import com.carevoice.auth.UserAccountRepository;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.SessionStatus;
-import com.carevoice.plan.DemoMonitoringPlans;
+import com.carevoice.service.DemoMonitoringPlans;
 import com.carevoice.repository.MonitoringPlanRepository;
 import com.carevoice.repository.MonitoringSessionRepository;
 import com.carevoice.repository.PatientRepository;

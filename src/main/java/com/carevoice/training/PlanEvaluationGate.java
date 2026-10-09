@@ -1,5 +1,4 @@
 package com.carevoice.training;
-
 import com.carevoice.training.PlanGenerationEvaluator.EvaluationReport;
 
 import java.util.ArrayList;

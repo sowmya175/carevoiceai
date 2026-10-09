@@ -1,9 +1,9 @@
 package com.carevoice.repository;
 
-import com.carevoice.checkin.DailySessionRow;
+import com.carevoice.domain.DailySessionRow;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.SessionStatus;
-import com.carevoice.longitudinal.SessionFactsSnapshot;
+import com.carevoice.domain.SessionFactsSnapshot;
 import org.springframework.data.domain.Pageable;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,7 +30,7 @@ public interface MonitoringSessionRepository extends JpaRepository<MonitoringSes
             Long patientId, SessionStatus status, LocalDate checkInDate);
 
     @Query("""
-            select new com.carevoice.checkin.DailySessionRow(
+            select new com.carevoice.domain.DailySessionRow(
                 s.patient.id, s.id, s.checkInDate, s.status, s.monitoringPlanName, s.createdAt, s.completedAt, s.riskLevel)
             from MonitoringSession s
             where s.patient.id in :patientIds
@@ -43,7 +43,7 @@ public interface MonitoringSessionRepository extends JpaRepository<MonitoringSes
             @Param("dates") Collection<LocalDate> dates);
 
     @Query("""
-            select new com.carevoice.longitudinal.SessionFactsSnapshot(
+            select new com.carevoice.domain.SessionFactsSnapshot(
                 s.id, s.createdAt, s.status, s.riskLevel, s.painScore, s.sleepQuality,
                 s.appetite, s.medicationTaken, s.dizziness, s.shortnessOfBreath,
                 s.lossOfConsciousness, s.dizzinessOnset, s.temperature, s.checkInDate, s.monitoringPlanName)

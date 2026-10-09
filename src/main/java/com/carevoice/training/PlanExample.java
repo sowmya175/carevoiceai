@@ -1,4 +1,5 @@
 package com.carevoice.training;
+import com.carevoice.service.PlanGenerationModel;
 
 import com.carevoice.domain.MonitoringAnswerType;
 import com.carevoice.domain.MonitoringCategory;

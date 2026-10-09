@@ -1,9 +1,10 @@
 package com.carevoice.training;
-
-import com.carevoice.domain.MonitoringCategory;
 import com.carevoice.training.PlanExample.TrainingCondition;
 import com.carevoice.training.PlanExample.TrainingField;
 import com.carevoice.training.PlanExample.TrainingQuestion;
+
+import com.carevoice.domain.MonitoringCategory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;

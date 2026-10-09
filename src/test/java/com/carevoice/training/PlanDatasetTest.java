@@ -1,10 +1,11 @@
 package com.carevoice.training;
-
-import com.carevoice.domain.MonitoringCategory;
-import com.carevoice.proposal.PlanGenerationModel.PlanGenerationResult;
+import com.carevoice.training.PlanTrainingCorpus.Dataset;
 import com.carevoice.training.PlanExample.TrainingOutput;
 import com.carevoice.training.PlanExample.TrainingQuestion;
-import com.carevoice.training.PlanTrainingCorpus.Dataset;
+
+import com.carevoice.domain.MonitoringCategory;
+import com.carevoice.service.PlanGenerationModel.PlanGenerationResult;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

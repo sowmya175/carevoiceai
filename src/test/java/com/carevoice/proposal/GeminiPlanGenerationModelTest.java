@@ -1,4 +1,7 @@
 package com.carevoice.proposal;
+import com.carevoice.integration.gemini.GeminiPlanGenerationModel;
+import com.carevoice.exception.PlanGenerationFailedException;
+import com.carevoice.service.PlanGenerationModel;
 
 import org.junit.jupiter.api.Test;
 

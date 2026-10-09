@@ -1,4 +1,9 @@
 package com.carevoice.auth;
+import com.carevoice.domain.AccountRole;
+import com.carevoice.config.DemoClinicianInitializer;
+import com.carevoice.config.DemoClinicianProperties;
+import com.carevoice.domain.UserAccount;
+import com.carevoice.repository.UserAccountRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

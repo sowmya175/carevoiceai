@@ -1,4 +1,12 @@
 package com.carevoice.history;
+import com.carevoice.service.ClinicalNoteAttacher;
+import com.carevoice.service.ClinicalNoteComposer;
+import com.carevoice.service.ClinicalNoteRequested;
+import com.carevoice.service.ClinicalNoteWriter;
+import com.carevoice.service.DeterministicClinicalNoteService;
+import com.carevoice.integration.gemini.GeminiClinicalNoteService;
+import com.carevoice.service.MonitoringHistoryRecorder;
+import com.carevoice.service.MonitoringResponseService;
 
 import com.carevoice.domain.ClinicalNote;
 import com.carevoice.domain.MonitoringTurn;

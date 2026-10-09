@@ -1,8 +1,11 @@
 package com.carevoice.agent;
+import com.carevoice.service.MonitoringSessionContext;
+import com.carevoice.service.PlannedQuestion;
+import com.carevoice.service.QuestionPlannerAgent;
 
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.RiskLevel;
-import com.carevoice.plan.DemoMonitoringPlans;
+import com.carevoice.service.DemoMonitoringPlans;
 import com.carevoice.service.EscalationEngine;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,8 @@
 package com.carevoice.training;
+import com.carevoice.training.PlanExample.TrainingField;
 
 import com.carevoice.domain.MonitoringAnswerType;
 import com.carevoice.domain.MonitoringCategory;
-import com.carevoice.training.PlanExample.TrainingField;
 
 import java.util.List;
 import java.util.Set;

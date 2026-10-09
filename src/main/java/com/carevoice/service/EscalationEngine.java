@@ -1,4 +1,5 @@
 package com.carevoice.service;
+import com.carevoice.domain.Patient;
 
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.RiskLevel;

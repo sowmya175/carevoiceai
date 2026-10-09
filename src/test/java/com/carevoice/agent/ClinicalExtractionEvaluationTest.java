@@ -1,4 +1,7 @@
 package com.carevoice.agent;
+import com.carevoice.service.ExtractedClinicalFacts;
+import com.carevoice.service.MonitoringSessionContext;
+import com.carevoice.service.RuleBasedClinicalExtractionService;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

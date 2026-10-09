@@ -1,16 +1,12 @@
 package com.carevoice.service;
 
-import com.carevoice.agent.MissingInformationAnalyzer;
-import com.carevoice.agent.PlannedQuestion;
-import com.carevoice.agent.QuestionPlannerAgent;
-import com.carevoice.agent.RuleBasedClinicalExtractionService;
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.Patient;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.history.HistoryTestSupport;
 import com.carevoice.repository.MonitoringSessionRepository;
-import com.carevoice.wording.QuestionWordingService;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 

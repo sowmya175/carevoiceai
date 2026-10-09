@@ -1,11 +1,15 @@
 package com.carevoice.training;
-
-import com.carevoice.proposal.PlanGenerationJson;
-import com.carevoice.proposal.PlanGenerationModel.GeneratedQuestion;
-import com.carevoice.proposal.PlanGenerationModel.PlanGenerationResult;
-import com.carevoice.proposal.PlanTaskContract;
 import com.carevoice.training.PlanTrainingCorpus.Dataset;
 import com.carevoice.training.VertexPlanTuningExporter.Export;
+import com.carevoice.integration.vertex.TuningJobGateway.SubmittedJob;
+import com.carevoice.integration.vertex.TuningJobGateway.TuningSubmission;
+import com.carevoice.integration.vertex.TuningJobGateway;
+
+import com.carevoice.service.PlanGenerationJson;
+import com.carevoice.service.PlanGenerationModel.GeneratedQuestion;
+import com.carevoice.service.PlanGenerationModel.PlanGenerationResult;
+import com.carevoice.service.PlanTaskContract;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
