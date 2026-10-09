@@ -34,7 +34,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.mockito.ArgumentCaptor;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -222,6 +226,80 @@ class MonitoringHistoryTest {
     }
 
     @Test
+    void confirmedVoiceTranscriptCreatesOneVoiceTurn() {
+        HistoryTestSupport history = openSession(21L);
+        var response = history.responses.acceptTranscript(21L, "My pain is five.");
+
+        assertThat(history.turns).hasSize(1);
+        assertThat(history.turns.get(0).getInputMode()).isEqualTo(InputMode.VOICE);
+        assertThat(history.turns.get(0).getPatientResponse()).isEqualTo("My pain is five.");
+        assertThat(response.collectedFacts().painScore()).isEqualTo(5);
+        assertThat(history.noteFor(1).orElseThrow().getExtractedFactsJson()).contains("\"painScore\":5");
+    }
+
+    @Test
+    void patientResponseReturnsBeforeTheClinicalNoteIsWritten() {
+        HistoryTestSupport history = openSession(12L);
+        TransactionSynchronizationManager.initSynchronization();
+        try {
+            var response = history.responses.acceptText(12L, FIRST_RESPONSE);
+
+            assertThat(response.nextQuestion()).isEqualTo(SECOND_QUESTION);
+            assertThat(history.turns).hasSize(1);
+            assertThat(history.noteFor(1).orElseThrow().getNoteText()).isNull();
+            assertThat(history.noteFor(1).orElseThrow().getExtractedFactsJson()).contains("\"painScore\":6");
+
+            ClinicalNoteRequested request = publishedNote(history);
+            history.completeScheduledNote(request);
+
+            assertThat(history.noteFor(1).orElseThrow().getNoteText())
+                    .isEqualTo("Patient reports dizziness and pain rated 6/10.");
+            assertThat(history.noteFor(1).orElseThrow().getExtractedFactsJson()).contains("\"painScore\":6");
+        } finally {
+            TransactionSynchronizationManager.clearSynchronization();
+        }
+    }
+
+    @Test
+    void failedAsynchronousNoteKeepsTheTurnAndStructuredFacts() {
+        GeminiClinicalNoteService gemini = mock(GeminiClinicalNoteService.class);
+        when(gemini.write(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any()))
+                .thenThrow(new RuntimeException("provider unavailable"));
+        HistoryTestSupport history = openSession(12L, gemini);
+        TransactionSynchronizationManager.initSynchronization();
+        try {
+            var response = history.responses.acceptText(12L, FIRST_RESPONSE);
+
+            assertThat(response.riskLevel()).isEqualTo(RiskLevel.YELLOW);
+            assertThat(history.turns).hasSize(1);
+            assertThat(history.turns.get(0).getPatientResponse()).isEqualTo(FIRST_RESPONSE);
+            assertThat(history.noteFor(1).orElseThrow().getNoteText()).isNull();
+            assertThat(history.noteFor(1).orElseThrow().getExtractedFactsJson()).contains("\"painScore\":6");
+
+            history.completeScheduledNote(publishedNote(history));
+
+            assertThat(history.noteFor(1).orElseThrow().getNoteProvider()).isEqualTo("deterministic");
+            assertThat(history.noteFor(1).orElseThrow().getNoteText())
+                    .isEqualTo("Patient reports dizziness and pain rated 6/10.");
+            assertThat(history.noteFor(1).orElseThrow().getExtractedFactsJson()).contains("\"painScore\":6");
+            assertThat(history.turns).hasSize(1);
+        } finally {
+            TransactionSynchronizationManager.clearSynchronization();
+        }
+    }
+
+    @Test
+    void noteListenerFailureDoesNotPropagate() {
+        ClinicalNoteAttacher attacher = mock(ClinicalNoteAttacher.class);
+        org.mockito.Mockito.doThrow(new RuntimeException("provider unavailable"))
+                .when(attacher).attach(org.mockito.ArgumentMatchers.any(ClinicalNoteRequested.class));
+        ClinicalNoteGenerationListener listener = new ClinicalNoteGenerationListener(attacher);
+
+        listener.generateNote(new ClinicalNoteRequested(
+                1L, 2L, OPENING, FIRST_RESPONSE, ExtractedClinicalFacts.none()));
+    }
+
+    @Test
     void rawAudioIsNotPartOfTheHistoryModel() {
         assertThat(MonitoringTurn.class.getDeclaredFields())
                 .noneMatch(field -> field.getType().equals(byte[].class) || field.getName().toLowerCase().contains("audio"));
@@ -235,6 +313,29 @@ class MonitoringHistoryTest {
                 6, true, null, null, null, null, null, null, null));
         assertThat(ExtractedFactsJson.read(json)).containsEntry("painScore", 6).containsEntry("dizziness", true);
         assertThat(json).doesNotContain("null");
+    }
+
+    private static HistoryTestSupport openSession(Long sessionId) {
+        return openSession(sessionId, null);
+    }
+
+    private static HistoryTestSupport openSession(Long sessionId, GeminiClinicalNoteService gemini) {
+        Patient patient = new Patient("Daily Check-In", "Daily monitoring");
+        HistoryTestSupport.setId(patient, 4L);
+        MonitoringSession session = new MonitoringSession(patient);
+        HistoryTestSupport.setId(session, sessionId);
+        session.setNextQuestion(OPENING);
+        MonitoringSessionRepository sessions = mock(MonitoringSessionRepository.class);
+        when(sessions.findByIdForUpdate(sessionId)).thenReturn(Optional.of(session));
+        when(sessions.findById(sessionId)).thenReturn(Optional.of(session));
+        when(sessions.save(org.mockito.ArgumentMatchers.any())).thenAnswer(invocation -> invocation.getArgument(0));
+        return HistoryTestSupport.capture(sessions, agent(sessions), gemini);
+    }
+
+    private static ClinicalNoteRequested publishedNote(HistoryTestSupport history) {
+        ArgumentCaptor<Object> published = ArgumentCaptor.forClass(Object.class);
+        verify(history.events).publishEvent(published.capture());
+        return (ClinicalNoteRequested) published.getValue();
     }
 
     private static ClinicalMonitoringAgent agent(MonitoringSessionRepository sessions) {

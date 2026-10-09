@@ -7,6 +7,7 @@ import com.carevoice.repository.MonitoringSessionRepository;
 import com.carevoice.repository.MonitoringTurnRepository;
 import com.carevoice.service.ClinicalMonitoringAgent;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public final class HistoryTestSupport {
     public final List<MonitoringTurn> turns = new ArrayList<>();
     public final List<ClinicalNote> notes = new ArrayList<>();
     public final MonitoringResponseService responses;
+    public final ApplicationEventPublisher events = mock(ApplicationEventPublisher.class);
+    private final ClinicalNoteAttacher attacher;
 
     private HistoryTestSupport(
             MonitoringSessionRepository sessions,
@@ -52,13 +55,17 @@ public final class HistoryTestSupport {
         ObjectProvider<GeminiClinicalNoteService> provider = mock(ObjectProvider.class);
         when(provider.getIfAvailable()).thenReturn(gemini);
         DeterministicClinicalNoteService deterministic = new DeterministicClinicalNoteService();
-        ClinicalNoteAttacher attacher = new ClinicalNoteAttacher(
+        this.attacher = new ClinicalNoteAttacher(
                 new ClinicalNoteComposer(provider, deterministic),
                 deterministic,
                 new ClinicalNoteWriter(noteRepository));
         this.responses = new MonitoringResponseService(
-                new MonitoringHistoryRecorder(sessions, turnRepository, noteRepository, agent),
-                attacher);
+                new MonitoringHistoryRecorder(sessions, turnRepository, noteRepository, agent, events, attacher),
+                agent);
+    }
+
+    public void completeScheduledNote(ClinicalNoteRequested request) {
+        attacher.attach(request);
     }
 
     public static MonitoringResponseService responses(

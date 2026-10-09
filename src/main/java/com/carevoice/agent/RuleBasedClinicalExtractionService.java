@@ -1,6 +1,9 @@
 package com.carevoice.agent;
 
 import com.carevoice.domain.MonitoringField;
+import com.carevoice.observability.VoiceTiming;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -9,6 +12,7 @@ import java.util.regex.Pattern;
 
 @Component
 public class RuleBasedClinicalExtractionService implements ClinicalExtractionService {
+    private static final Logger log = LoggerFactory.getLogger(RuleBasedClinicalExtractionService.class);
 
     private static final String PAIN_NUMBER =
             "10|[0-9]|zero|one|two|three|four|five|six|seven|eight|nine|ten";
@@ -27,6 +31,19 @@ public class RuleBasedClinicalExtractionService implements ClinicalExtractionSer
 
     @Override
     public ExtractedClinicalFacts extract(String message, MonitoringSessionContext context) {
+        long started = System.nanoTime();
+        try {
+            return extractFacts(message, context);
+        } finally {
+            Long sessionId = context == null ? null : context.sessionId();
+            VoiceTiming.log(log, "ruleExtractionMs=" + VoiceTiming.millisSince(started) + " sessionId=" + sessionId);
+            if (!VoiceTiming.insideHybridExtraction()) {
+                VoiceTiming.log(log, "geminiExtraction=SKIPPED geminiExtractionMs=0 sessionId=" + sessionId);
+            }
+        }
+    }
+
+    private ExtractedClinicalFacts extractFacts(String message, MonitoringSessionContext context) {
         String text = message == null ? "" : message.toLowerCase(Locale.ROOT).replace('’', '\'');
         MonitoringField requested = context == null ? null : context.previouslyRequestedField();
         if (text.trim().matches("(?:okay|ok|maybe|not sure|i don't know|i do not know|unsure)[.!?]*")) {
@@ -255,6 +272,7 @@ public class RuleBasedClinicalExtractionService implements ClinicalExtractionSer
             return "reduced";
         }
         if (contains(text, "haven't really felt hungry", "have not really felt hungry",
+                "haven't felt hungry", "have not felt hungry",
                 "not hungry", "less hungry", "less than usual")) {
             return "reduced";
         }

@@ -1,5 +1,8 @@
 package com.carevoice.api;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import com.carevoice.voice.TranscriptResponse;
 import com.carevoice.voice.VoiceMonitoringResponse;
 import com.carevoice.voice.VoiceMonitoringService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,7 +25,14 @@ public class VoiceMonitoringController {
     }
 
     @PostMapping(path = "/sessions/{sessionId}/voice", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("@patientAccess.ownsSession(#sessionId, authentication)")
     public VoiceMonitoringResponse voice(@PathVariable Long sessionId, @RequestPart("audio") MultipartFile audio) {
         return voiceMonitoring.process(sessionId, audio);
+    }
+
+    @PostMapping(path = "/sessions/{sessionId}/voice/transcribe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("@patientAccess.ownsSession(#sessionId, authentication)")
+    public TranscriptResponse transcribe(@PathVariable Long sessionId, @RequestPart("audio") MultipartFile audio) {
+        return new TranscriptResponse(voiceMonitoring.transcribeOnly(sessionId, audio));
     }
 }

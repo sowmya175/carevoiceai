@@ -1,0 +1,74 @@
+{
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "totalExamples" : 114,
+  "singleCondition" : 63,
+  "multiCondition" : 51,
+  "byConditionCount" : {
+    "1" : 63,
+    "2" : 44,
+    "3" : 7
+  },
+  "byCategory" : {
+    "CARDIAC" : 11,
+    "DIABETES" : 33,
+    "HYPERTENSION" : 41,
+    "OTHER" : 7,
+    "POST_OPERATIVE" : 51,
+    "RESPIRATORY" : 18,
+    "WELLNESS" : 11
+  },
+  "outputFieldFrequency" : {
+    "PAIN_SCORE" : 60,
+    "MEDICATION_TAKEN" : 107,
+    "APPETITE" : 75,
+    "SLEEP_QUALITY" : 60,
+    "TEMPERATURE" : 31
+  },
+  "conditionFamilyFrequency" : {
+    "GENERAL_WELLNESS" : 11,
+    "CARDIAC_SURGERY_RECOVERY" : 18,
+    "ORTHOPEDIC_SURGERY_RECOVERY" : 24,
+    "ABDOMINAL_SURGERY_RECOVERY" : 9,
+    "HYPERTENSION" : 41,
+    "TYPE_1_DIABETES" : 5,
+    "TYPE_2_DIABETES" : 28,
+    "CARDIAC" : 11,
+    "RESPIRATORY" : 18,
+    "OTHER" : 7
+  },
+  "dedupeExamples" : 46,
+  "unsupportedOmissionExamples" : 103,
+  "noGoodFitExamples" : 8,
+  "sparseCatalogExamples" : 5,
+  "selectiveExamples" : 83,
+  "paraphraseExamples" : 113,
+  "primaryReversalExamples" : 20,
+  "challengeExamples" : 12,
+  "schemaValidation" : "pass",
+  "deterministicBaselineOnTestSplit" : {
+    "examples" : 10,
+    "fieldPrecision" : 1.0,
+    "fieldRecall" : 1.0,
+    "fieldF1" : 1.0,
+    "duplicateFieldRate" : 0.0,
+    "unknownFieldRate" : 0.0,
+    "unsupportedFieldRate" : 0.0,
+    "structuredOutputValidityRate" : 1.0,
+    "conditionFamilyAccuracy" : 0.2,
+    "requiredFlagAccuracy" : 1.0,
+    "wordingSafetyRate" : 1.0
+  },
+  "deterministicBaselineOnChallenge" : {
+    "examples" : 12,
+    "fieldPrecision" : 0.7391304347826086,
+    "fieldRecall" : 1.0,
+    "fieldF1" : 0.85,
+    "duplicateFieldRate" : 0.0,
+    "unknownFieldRate" : 0.0,
+    "unsupportedFieldRate" : 0.0,
+    "structuredOutputValidityRate" : 1.0,
+    "conditionFamilyAccuracy" : 0.25,
+    "requiredFlagAccuracy" : 1.0,
+    "wordingSafetyRate" : 1.0
+  }
+}

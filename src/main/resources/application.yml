@@ -15,17 +15,44 @@ spring:
       max-request-size: ${CAREVOICE_VOICE_MAX_FILE_SIZE_MB:20}MB
 
 server:
+  servlet:
+    session:
+      timeout: 30m
+      tracking-modes: cookie
+      cookie:
+        http-only: true
+        same-site: lax
+        secure: ${CAREVOICE_SESSION_COOKIE_SECURE:false}
   port: ${PORT:8080}
   tomcat:
     max-http-form-post-size: ${CAREVOICE_VOICE_MAX_FILE_SIZE_MB:20}MB
 
 carevoice:
+  demo:
+    clinician:
+      enabled: ${CAREVOICE_DEMO_CLINICIAN_ENABLED:false}
+      username: ${CAREVOICE_DEMO_CLINICIAN_USERNAME:}
+      password: ${CAREVOICE_DEMO_CLINICIAN_PASSWORD:}
   frontend:
     origin: ${CAREVOICE_FRONTEND_ORIGIN:http://localhost:5173}
   ai:
     enabled: ${CAREVOICE_AI_ENABLED:false}
     model: ${GEMINI_MODEL:gemini-3.8-flash}
     adaptive-questions-enabled: ${CAREVOICE_ADAPTIVE_QUESTIONS_ENABLED:false}
+    timeout-millis: ${CAREVOICE_AI_TIMEOUT_MS:12000}
+  plan-ai:
+    enabled: ${CAREVOICE_PLAN_AI_ENABLED:false}
+    provider: ${CAREVOICE_PLAN_MODEL_PROVIDER:deterministic}
+    base-model: ${CAREVOICE_PLAN_BASE_MODEL:gemini-3.5-flash}
+    tuned-model: ${CAREVOICE_PLAN_TUNED_MODEL:}
+    project-id: ${CAREVOICE_PLAN_PROJECT_ID:}
+    location: ${CAREVOICE_PLAN_LOCATION:}
+    timeout-millis: ${CAREVOICE_PLAN_AI_TIMEOUT_MS:20000}
+    fallback-to-base: ${CAREVOICE_PLAN_FALLBACK_TO_BASE:false}
+  reminders:
+    enabled: ${CAREVOICE_REMINDERS_ENABLED:false}
+    scan-interval-ms: ${CAREVOICE_REMINDER_SCAN_INTERVAL_MS:300000}
+    window-minutes: ${CAREVOICE_REMINDER_WINDOW_MINUTES:240}
   voice:
     enabled: ${CAREVOICE_VOICE_ENABLED:false}
     provider: ${CAREVOICE_VOICE_PROVIDER:groq}

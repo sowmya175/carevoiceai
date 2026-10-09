@@ -9,6 +9,8 @@ import com.carevoice.agent.MonitoringSessionContext;
 import com.carevoice.agent.PlannedQuestion;
 import com.carevoice.agent.QuestionPlannerAgent;
 import com.carevoice.domain.MonitoringField;
+import com.carevoice.plan.PlanField;
+import com.carevoice.plan.SessionMonitoringPlan;
 import java.util.ArrayList;
 import com.carevoice.wording.DeterministicQuestionWordingService;
 import com.carevoice.wording.QuestionContext;
@@ -16,7 +18,10 @@ import com.carevoice.wording.QuestionWordingService;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;
+import com.carevoice.observability.VoiceTiming;
 import com.carevoice.repository.MonitoringSessionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +30,8 @@ import java.util.List;
 
 @Service
 public class ClinicalMonitoringAgent {
+    private static final Logger log = LoggerFactory.getLogger(ClinicalMonitoringAgent.class);
+
     private final MonitoringSessionRepository sessionRepository;
     private final ClinicalExtractionService extractionService;
     private final MonitoringSessionMerger merger;
@@ -70,7 +77,11 @@ public class ClinicalMonitoringAgent {
 
     @Transactional
     public ClinicalAgentResponse processMessage(Long sessionId, String patientMessage) {
-        return processTurn(sessionId, patientMessage).response();
+        MonitoringSession session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("Monitoring session not found: " + sessionId));
+        String previousQuestion = session.getNextQuestion();
+        AgentTurn turn = processTurn(sessionId, patientMessage);
+        return present(sessionId, previousQuestion, patientMessage, turn.response());
     }
 
     @Transactional
@@ -80,6 +91,56 @@ public class ClinicalMonitoringAgent {
 
         MonitoringSessionContext extractionContext = MonitoringSessionContext.from(session);
         ExtractedClinicalFacts extracted = extractionService.extract(patientMessage, extractionContext);
+        long planningStarted = System.nanoTime();
+        try {
+            return planTurn(session, patientMessage, extractionContext, extracted);
+        } finally {
+            VoiceTiming.log(log, "planningMs=" + VoiceTiming.millisSince(planningStarted) + " sessionId=" + sessionId);
+        }
+    }
+
+    /**
+     * Applies optional adaptive wording after the monitoring transaction has committed.
+     * Field selection has already happened. Clarification text is left unchanged.
+     */
+    public ClinicalAgentResponse present(
+            Long sessionId,
+            String previousQuestion,
+            String patientMessage,
+            ClinicalAgentResponse response) {
+        if (response.conversationComplete() || response.nextQuestion() == null || response.requestedField() == null
+                || QuestionClarification.question(response.requestedField()).equals(response.nextQuestion())) {
+            VoiceTiming.log(log, "adaptiveWordingMs=0 sessionId=" + sessionId);
+            return response;
+        }
+        long started = System.nanoTime();
+        String displayed = questionWording.generateQuestion(
+                new PlannedQuestion(response.requestedField(), response.nextQuestion()),
+                new QuestionContext(previousQuestion, patientMessage, response.collectedFacts()));
+        VoiceTiming.log(log, "adaptiveWordingMs=" + VoiceTiming.millisSince(started) + " sessionId=" + sessionId);
+        if (displayed == null || displayed.isBlank() || displayed.equals(response.nextQuestion())) {
+            return response;
+        }
+        sessionRepository.findById(sessionId).ifPresent(session -> {
+            session.setNextQuestion(displayed);
+            sessionRepository.save(session);
+        });
+        return new ClinicalAgentResponse(
+                response.sessionId(),
+                displayed,
+                response.requestedField(),
+                response.missingFields(),
+                response.riskLevel(),
+                response.status(),
+                response.conversationComplete(),
+                response.collectedFacts());
+    }
+
+    private AgentTurn planTurn(
+            MonitoringSession session,
+            String patientMessage,
+            MonitoringSessionContext extractionContext,
+            ExtractedClinicalFacts extracted) {
         session.setLatestTranscript(patientMessage);
         merger.merge(session, extracted);
 
@@ -88,8 +149,9 @@ public class ClinicalMonitoringAgent {
         session.setEscalationReason(evaluation.reason());
 
         CollectedFacts collected = CollectedFacts.from(session);
+        List<PlanField> sessionPlan = SessionMonitoringPlan.fields(session);
         MonitoringField previousField = extractionContext.previouslyRequestedField();
-        List<MonitoringField> missing = new ArrayList<>(missingInformationAnalyzer.missingFields(collected));
+        List<MonitoringField> missing = new ArrayList<>(missingInformationAnalyzer.missingFields(collected, sessionPlan));
         // Explicitly directed optional fields need the same clarification path as routine fields.
         if (previousField != null && QuestionClarification.isUnknown(previousField, collected)
                 && !missing.contains(previousField)) {
@@ -111,7 +173,7 @@ public class ClinicalMonitoringAgent {
         }
         session.setClarifiedField(null);
         List<MonitoringField> plannable = missing.stream().filter(field -> !session.isDeferred(field)).toList();
-        var next = questionPlanner.plan(MonitoringSessionContext.from(session), plannable, evaluation);
+        var next = questionPlanner.plan(MonitoringSessionContext.from(session), plannable, evaluation, sessionPlan);
         if (next.isEmpty()) {
             SessionStatus status = evaluation.riskLevel() == RiskLevel.GREEN
                     ? SessionStatus.COMPLETED
@@ -120,8 +182,7 @@ public class ClinicalMonitoringAgent {
         }
 
         PlannedQuestion question = next.get();
-        return ask(session, question.field(),
-                displayedQuestion(question, session.getNextQuestion(), patientMessage, collected), missing, extracted);
+        return ask(session, question.field(), question.question(), missing, extracted);
     }
 
     private AgentTurn ask(MonitoringSession session, MonitoringField field, String displayedQuestion,
@@ -141,20 +202,6 @@ public class ClinicalMonitoringAgent {
                 false,
                 CollectedFacts.from(session)
         ), extracted);
-    }
-
-    private String displayedQuestion(
-            PlannedQuestion question,
-            String previousQuestion,
-            String patientMessage,
-            CollectedFacts collected) {
-        String displayed = questionWording.generateQuestion(
-                question,
-                new QuestionContext(previousQuestion, patientMessage, collected));
-        if (displayed == null || displayed.isBlank()) {
-            return question.question();
-        }
-        return displayed;
     }
 
     private AgentTurn complete(MonitoringSession session, List<MonitoringField> missing, SessionStatus status, ExtractedClinicalFacts extracted) {

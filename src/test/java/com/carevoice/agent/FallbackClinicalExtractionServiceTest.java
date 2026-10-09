@@ -18,7 +18,8 @@ class FallbackClinicalExtractionServiceTest {
         RuleBasedClinicalExtractionService rules = new RuleBasedClinicalExtractionService();
         when(gemini.extract(eq("My pain is 6."), any())).thenThrow(new GenAiIOException("provider unavailable"));
 
-        FallbackClinicalExtractionService fallback = new FallbackClinicalExtractionService(gemini, rules);
+        FallbackClinicalExtractionService fallback = new FallbackClinicalExtractionService(
+                gemini, rules, new ClinicalExtractionRoutingPolicy());
 
         ExtractedClinicalFacts facts = fallback.extract("My pain is 6.", MonitoringSessionContext.empty());
 

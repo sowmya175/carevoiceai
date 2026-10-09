@@ -5,6 +5,7 @@ import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,8 @@ public record SessionHistoryResponse(
         SessionStatus status,
         String currentQuestion,
         boolean conversationComplete,
+        String monitoringPlanName,
+        LocalDate checkInDate,
         List<Turn> turns
 ) {
     public record Turn(

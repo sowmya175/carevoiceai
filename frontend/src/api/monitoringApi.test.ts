@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fetchLongitudinalSummary, fetchSessionHistory, messageForFailedResponse } from "./monitoringApi.ts";
+import { fetchLongitudinalSummary, fetchSessionHistory, messageForFailedResponse, resetCsrf, sendTextMessage } from "./monitoringApi.ts";
 import { historySummary, jsonResponse, sessionHistory } from "../test/historyFixtures.ts";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -10,7 +10,7 @@ describe("history API", () => {
     const signal = new AbortController().signal;
     expect((await fetchLongitudinalSummary(7, signal)).medication.unknownCount).toBe(1);
     expect(fetch).toHaveBeenCalledWith(expect.stringContaining("/api/patients/7/longitudinal-summary?limit=30"),
-      { headers: { Accept: "application/json" }, cache: "no-store", signal });
+      { headers: { Accept: "application/json" }, cache: "no-store", credentials: "include", signal });
   });
 
   it("rejects partial, invalid and wrong-patient summaries instead of inventing values", async () => {
@@ -31,6 +31,26 @@ describe("history API", () => {
     await expect(fetchSessionHistory(103)).rejects.toThrow();
     expect(fetch).toHaveBeenCalledWith(expect.stringContaining("/api/monitoring/sessions/103/history"), expect.objectContaining({ cache: "no-store" }));
   });
+});
+
+it("sends the session cookie and a memory-only CSRF header", async () => {
+  resetCsrf();
+  localStorage.clear();
+  vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url.endsWith("/api/auth/csrf")) return jsonResponse({ headerName: "X-CSRF-TOKEN", token: "csrf-test" });
+    return jsonResponse({ sessionId: 3, conversationComplete: false, status: "IN_PROGRESS" });
+  }));
+  await sendTextMessage(3, "hello");
+  const calls = vi.mocked(fetch).mock.calls;
+  expect(String(calls[0][0])).toContain("/api/auth/csrf");
+  expect(calls[0][1]).toMatchObject({ credentials: "include" });
+  expect(calls[1][1]).toMatchObject({
+    method: "POST",
+    credentials: "include",
+    headers: expect.objectContaining({ "X-CSRF-TOKEN": "csrf-test" }),
+  });
+  expect(localStorage.length).toBe(0);
 });
 
 describe("messageForFailedResponse", () => {

@@ -3,6 +3,7 @@ package com.carevoice.longitudinal;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 /** Scalar query projection: no transcripts, notes, or lazy entity associations. */
@@ -19,5 +20,7 @@ public record SessionFactsSnapshot(
         Boolean shortnessOfBreath,
         Boolean lossOfConsciousness,
         String dizzinessOnset,
-        Double temperature
+        Double temperature,
+        LocalDate checkInDate,
+        String monitoringPlanName
 ) {}

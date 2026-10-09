@@ -40,29 +40,53 @@ Backend: `http://localhost:8080`
 
 ## Demo flow
 
-### 1. Create patient
+Patient sign-in uses a server session. The `JSESSIONID` cookie is HttpOnly.
+Mutating requests also send the CSRF token from `GET /api/auth/csrf` in the
+`X-CSRF-TOKEN` header. The React app does this with `credentials: "include"`
+and keeps the CSRF token in memory only.
+
+### 1. Register and sign in
 
 ```bash
-curl -X POST http://localhost:8080/api/patients \
-  -H "Content-Type: application/json" \
-  -d '{"displayName":"Demo Patient","monitoringPlan":"Post-discharge daily monitoring"}'
+curl -c cookies.txt http://localhost:8080/api/auth/csrf
+curl -b cookies.txt -c cookies.txt -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" -H "X-CSRF-TOKEN: TOKEN" \
+  -d '{"username":"ada01","password":"correct-horse-battery","fullName":"Ada Lovelace","medicalCondition":"Recovery","timezone":"America/New_York"}'
+curl -b cookies.txt -c cookies.txt -X POST http://localhost:8080/api/auth/login/patient \
+  -H "Content-Type: application/json" -H "X-CSRF-TOKEN: TOKEN" \
+  -d '{"username":"ada01","password":"correct-horse-battery"}'
+curl -b cookies.txt -c cookies.txt http://localhost:8080/api/auth/csrf
 ```
 
-Assume the returned patient ID is `1`.
+Login replaces the CSRF token, so load it again before the next POST.
+`POST /api/patients` is closed. Patient registration always creates role `PATIENT`
+and does not attach the account to an existing patient row. Doctor accounts are
+not publicly registered. For a local demo clinician, set
+`CAREVOICE_DEMO_CLINICIAN_ENABLED`, `CAREVOICE_DEMO_CLINICIAN_USERNAME`, and
+`CAREVOICE_DEMO_CLINICIAN_PASSWORD` in the environment. The password is hashed
+once and is not overwritten when that username already exists. Doctor sign-in
+is `POST /api/auth/login/clinician`.
 
-### 2. Start check-in
+### 2. Start today's check-in
+
+One check-in exists per patient per patient-local calendar date. `Patient.timezone` decides the date. `GET /api/me/check-in/today` returns that status. `POST /api/me/check-in/today` returns the session for that date or creates it. `POST /api/monitoring/me/sessions` uses the same path, so a second start on the same local date does not create another session.
+
+An unfinished check-in from an earlier local date is continued first. The next local date can start only after that session is completed or ready for review. Sessions saved before this rule can have a null `check_in_date`. They remain in history and are not rewritten or counted in the daily uniqueness rule.
 
 ```bash
-curl -X POST http://localhost:8080/api/monitoring/patients/1/sessions
+curl -b cookies.txt -X POST http://localhost:8080/api/me/check-in/today \
+  -H "X-CSRF-TOKEN: NEW_TOKEN"
 ```
+
+A patient can set one daily reminder time. New patients start with in-app reminders enabled at 08:00 in `Patient.timezone`. That default is not consent for text messages, email, or push notifications. The scheduler stays off unless `CAREVOICE_REMINDERS_ENABLED=true`. It sends at most one daily check-in reminder per patient-local date, from the reminder time through the configured window (default 4 hours). A later timezone change does not rewrite older reminder dates. If the new local date already has a reminder, another one is not sent.
 
 Assume the returned session ID is `1`.
 
 ### 3. Send the patient's first statement
 
 ```bash
-curl -X POST http://localhost:8080/api/monitoring/sessions/1/messages \
-  -H "Content-Type: application/json" \
+curl -b cookies.txt -X POST http://localhost:8080/api/monitoring/sessions/1/messages \
+  -H "Content-Type: application/json" -H "X-CSRF-TOKEN: NEW_TOKEN" \
   -d '{"transcript":"I feel dizzy today and my pain is 6 out of 10."}'
 ```
 
@@ -71,8 +95,8 @@ The agent will extract the facts, calculate risk, and return the next follow-up 
 ### 4. Continue the agent loop
 
 ```bash
-curl -X POST http://localhost:8080/api/monitoring/sessions/1/messages \
-  -H "Content-Type: application/json" \
+curl -b cookies.txt -X POST http://localhost:8080/api/monitoring/sessions/1/messages \
+  -H "Content-Type: application/json" -H "X-CSRF-TOKEN: NEW_TOKEN" \
   -d '{"transcript":"I did not faint or pass out."}'
 ```
 

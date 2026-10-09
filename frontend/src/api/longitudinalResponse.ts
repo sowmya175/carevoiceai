@@ -5,6 +5,7 @@ const number = (value: unknown): value is number => typeof value === "number" &&
 const count = (value: unknown) => number(value) && Number.isInteger(value) && value >= 0;
 const id = (value: unknown) => count(value) && (value as number) > 0;
 const date = (value: unknown) => typeof value === "string" && Number.isFinite(Date.parse(value));
+const calendarDate = (value: unknown) => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 const nullableDate = (value: unknown) => value === null || date(value);
 const nullableNumber = (value: unknown) => value === null || number(value);
 const boolean = (value: unknown) => value === null || typeof value === "boolean";
@@ -43,5 +44,7 @@ export function isLongitudinalResponse(value: unknown): value is PatientLongitud
     && Array.isArray(value.sessions) && value.sessions.length === value.sessionCount
     && value.sessions.every((item) => record(item) && id(item.sessionId) && date(item.startedAt)
       && ["COMPLETED", "READY_FOR_REVIEW", "IN_PROGRESS"].includes(item.status as string) && count(item.turnCount)
-      && ["GREEN", "YELLOW", "RED"].includes(item.riskLevel as string));
+      && ["GREEN", "YELLOW", "RED"].includes(item.riskLevel as string)
+      && (item.checkInDate === undefined || item.checkInDate === null || calendarDate(item.checkInDate))
+      && (item.monitoringPlanName === undefined || item.monitoringPlanName === null || typeof item.monitoringPlanName === "string"));
 }

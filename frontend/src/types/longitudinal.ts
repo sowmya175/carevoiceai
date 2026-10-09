@@ -27,6 +27,8 @@ export interface SymptomSummary {
 }
 export interface CheckInSummary {
   sessionId: number; startedAt: string; status: SessionStatus; riskLevel: RiskLevel; turnCount: number;
+  checkInDate?: string | null;
+  monitoringPlanName?: string | null;
 }
 export interface PatientLongitudinalResponse {
   patientId: number;

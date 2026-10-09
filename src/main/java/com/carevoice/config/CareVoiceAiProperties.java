@@ -7,6 +7,7 @@ public class CareVoiceAiProperties {
     private boolean enabled;
     private String model = "gemini-3.8-flash";
     private boolean adaptiveQuestionsEnabled;
+    private int timeoutMillis = 12_000;
 
     public boolean isEnabled() {
         return enabled;
@@ -30,5 +31,13 @@ public class CareVoiceAiProperties {
 
     public void setAdaptiveQuestionsEnabled(boolean adaptiveQuestionsEnabled) {
         this.adaptiveQuestionsEnabled = adaptiveQuestionsEnabled;
+    }
+
+    public int getTimeoutMillis() {
+        return timeoutMillis;
+    }
+
+    public void setTimeoutMillis(int timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
     }
 }

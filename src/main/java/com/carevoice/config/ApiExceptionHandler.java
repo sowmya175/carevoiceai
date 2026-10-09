@@ -1,5 +1,6 @@
 package com.carevoice.config;
 
+import com.carevoice.plan.MonitoringPlanUnavailableException;
 import com.carevoice.voice.AudioTranscriptionException;
 import com.carevoice.voice.BlankTranscriptionException;
 import com.carevoice.voice.VoiceUploadException;
@@ -18,6 +19,12 @@ public class ApiExceptionHandler {
 
     public ApiExceptionHandler(CareVoiceVoiceProperties voiceProperties) {
         this.voiceProperties = voiceProperties;
+    }
+
+    @ExceptionHandler(MonitoringPlanUnavailableException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleMissingPlan(MonitoringPlanUnavailableException ex) {
+        return Map.of("error", MonitoringPlanUnavailableException.CLIENT_MESSAGE);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

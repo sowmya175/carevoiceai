@@ -1,0 +1,7 @@
+{
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "executable" : false,
+  "includedInSplits" : false,
+  "reason" : "These fields are not routine plan-askable outputs in carevoice-plan-generation-v1.",
+  "fields" : [ "DIZZINESS", "SHORTNESS_OF_BREATH", "INCISION_STATUS", "SWELLING", "MOBILITY", "ACTIVITY_TOLERANCE", "BLOOD_PRESSURE", "GLUCOSE", "WEIGHT", "HEART_RATE", "OXYGEN_SATURATION" ]
+}

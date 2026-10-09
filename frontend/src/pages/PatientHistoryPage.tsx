@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { fetchLongitudinalSummary, MonitoringApiError } from "../api/monitoringApi.ts";
 import { HistoryTrends } from "../components/HistoryTrends.tsx";
 import { SessionHistoryDetail } from "../components/SessionHistoryDetail.tsx";
-import { formatDate, statusLabel } from "../components/historyFormat.ts";
+import { formatCalendarDate, formatDate, statusLabel } from "../components/historyFormat.ts";
 import type { PatientLongitudinalResponse } from "../types/longitudinal.ts";
 
 export function PatientHistoryPage({ patientId, initialSessionId = null, onCheckIn }: {
@@ -49,12 +49,15 @@ export function PatientHistoryPage({ patientId, initialSessionId = null, onCheck
       </section>
       <HistoryTrends data={data} />
       <section className="history-card" aria-label="Recent check-ins"><h2>Recent check-ins</h2>
-        <ul className="session-list">{data.sessions.toReversed().map((session) => <li key={session.sessionId}>
-          <div><h3><time dateTime={session.startedAt}>{formatDate(session.startedAt, true)}</time></h3>
-            <p className="muted"><span className="session-status">{statusLabel(session.status)}</span> · {session.turnCount} answered {session.turnCount === 1 ? "turn" : "turns"}</p></div>
-          <button type="button" className="secondary" aria-label={`View details for ${formatDate(session.startedAt, true)}, check-in ${session.sessionId}`}
+        <ul className="session-list">{data.sessions.toReversed().map((session) => {
+          const when = session.checkInDate ? formatCalendarDate(session.checkInDate) : formatDate(session.startedAt, true);
+          return <li key={session.sessionId}>
+          <div><h3><time dateTime={session.checkInDate ?? session.startedAt}>{when}</time></h3>
+            <p className="muted">{session.monitoringPlanName ? `${session.monitoringPlanName} · ` : null}<span className="session-status">{statusLabel(session.status)}</span> · {session.turnCount} answered {session.turnCount === 1 ? "turn" : "turns"}</p></div>
+          <button type="button" className="secondary" aria-label={`View details for ${when}, check-in ${session.sessionId}`}
             onClick={() => setSelected(session.sessionId)}>View details</button>
-        </li>)}</ul>
+        </li>;
+        })}</ul>
       </section>
     </>}
   </main>;

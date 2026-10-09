@@ -15,6 +15,8 @@ body {
 }
 
 button,
+input,
+select,
 textarea {
   font: inherit;
 }
@@ -78,6 +80,27 @@ h1 {
   margin-bottom: 1rem;
 }
 
+.speech-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.speech-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #16324f;
+}
+
+.speech-note {
+  flex-basis: 100%;
+  margin: 0;
+  color: #52606d;
+}
+
 .question-card h2,
 .complete-card h2 {
   margin: 0.25rem 0 0;
@@ -122,6 +145,28 @@ h1 {
   margin: 0.2rem 0 0;
 }
 
+.heard-label {
+  margin: 0;
+  font-weight: 700;
+  color: #0b3a66;
+}
+
+.heard-text,
+.heard-review textarea {
+  margin: 0.6rem 0 1rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+}
+
+.heard-review textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #b7c9d3;
+  font: inherit;
+  color: #16324f;
+}
+
 .recorder-actions,
 .start {
   display: flex;
@@ -151,6 +196,8 @@ h1 {
   gap: 0.75rem;
 }
 
+input,
+select,
 textarea {
   width: 100%;
   border: 2px solid #9fb3c8;
@@ -159,6 +206,38 @@ textarea {
   background: #ffffff;
   color: #102a43;
 }
+
+.auth-panel { width: min(100%, 32rem); margin: 2rem auto; padding: 0 1.5rem 3rem; }
+.auth-panel form { display: grid; gap: 0.35rem; margin-top: 1rem; }
+.account-summary { margin-right: auto; }
+.account-summary p { margin: 0; color: #254c63; }
+.account-summary p:first-child { font-weight: 650; color: #0b3a66; }
+.auth-panel section { margin-top: 1.5rem; }
+.auth-panel h2 { margin: 0 0 0.6rem; font-size: 1.1rem; color: #0b3a66; }
+.patient-list { list-style: none; padding: 0; display: grid; gap: 0.75rem; }
+.patient-list article { background: #fff; border: 1px solid #dce7ed; border-radius: 1rem; padding: 1rem 1.2rem; }
+.overview-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .75rem; margin: 0 0 1.25rem; }
+.overview-cards article { background: #fff; border: 1px solid #dce7ed; border-radius: 1rem; padding: .9rem 1rem; }
+.overview-cards p { margin: 0; color: #52606d; }
+.overview-cards strong { display: block; font-size: 1.7rem; color: #075757; }
+.dashboard-tools { display: grid; gap: .55rem; justify-items: start; margin-bottom: 1.25rem; }
+.dashboard-tools input { max-width: 24rem; }
+.filter-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+.filter-row button { background: #e7eef3; color: #254c63; }
+.filter-row button[aria-pressed="true"] { background: #0f6e6e; color: #fff; }
+.review-note { font-weight: 700; }
+.clinician-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.fact-list { display: grid; gap: .45rem; margin: .5rem 0 0; }
+.fact-list div { display: grid; grid-template-columns: minmax(9rem, 14rem) 1fr; gap: .5rem; }
+.fact-list dt { margin: 0; color: #52606d; }
+.fact-list dd { margin: 0; }
+.condition-list { list-style: none; padding: 0; display: grid; gap: .75rem; }
+.condition-list article, .condition-list > li { margin: 0; }
+.condition-form { display: grid; gap: .4rem; max-width: 28rem; margin-top: .8rem; }
+.patient-list h2, .patient-list p { margin: 0.2rem 0; }
+.plan-form { margin-top: 0.8rem; }
+.plan-form fieldset { border: 1px solid #dce7ed; border-radius: 0.8rem; display: grid; gap: 0.45rem; }
+.plan-form label { display: flex; gap: 0.5rem; align-items: center; }
 
 .complete-card p {
   margin-bottom: 0;
@@ -181,6 +260,10 @@ textarea {
 .history-header .subtitle { margin-bottom: 0; }
 .history-card { min-width: 0; padding: 1.4rem; background: #fff; border: 1px solid #dce7ed; border-radius: 1.1rem; margin-bottom: 1.25rem; box-shadow: 0 3px 14px #16384a04; }
 .history-card h2 { margin: 0 0 .8rem; font-size: 1.25rem; color: #0b3a66; }
+.reminder-banner { background: #f4faf8; }
+.reminder-settings form { display: grid; gap: .45rem; justify-items: start; }
+.reminder-settings input[type="time"] { width: auto; }
+.reminder-toggle { display: flex; gap: .6rem; align-items: center; }
 .history-card h3 { margin: 0 0 .4rem; font-size: 1rem; }
 .history-card p { margin: .5rem 0; }
 .history-overview { background: #e5f2ef; border-radius: 1rem; padding: 1rem 1.4rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
@@ -239,6 +322,7 @@ summary:focus-visible { outline: 3px solid #0b3a66; outline-offset: 3px; border-
   .app-header nav button { flex: 1; }
   .history-page, .check-in { padding: 1.5rem 1rem 3rem; }
   .history-grid { grid-template-columns: 1fr; gap: 0; }
+  .overview-cards, .clinician-columns { grid-template-columns: 1fr; }
   .history-card { padding: 1.1rem; }
   .history-overview { align-items: flex-start; flex-direction: column; gap: .25rem; }
   .pain-metrics { gap: .75rem 1.25rem; }

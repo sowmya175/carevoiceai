@@ -32,6 +32,7 @@ class AdaptiveQuestionConfigurationTest {
                     assertThat(context.getBean(QuestionWordingService.class))
                             .isInstanceOf(AdaptiveQuestionWordingService.class);
                     assertThat(context.getBean(CareVoiceAiProperties.class).isAdaptiveQuestionsEnabled()).isFalse();
+                    assertThat(context.getBean(CareVoiceAiProperties.class).getTimeoutMillis()).isEqualTo(12_000);
                 });
     }
 

@@ -1,5 +1,7 @@
 package com.carevoice.api;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.carevoice.longitudinal.LongitudinalAnalysisService;
 import com.carevoice.longitudinal.PatientLongitudinalResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ public class PatientLongitudinalController {
     }
 
     @GetMapping("/api/patients/{patientId}/longitudinal-summary")
+    @PreAuthorize("@patientAccess.canReadPatient(#patientId, authentication)")
     public PatientLongitudinalResponse summary(@PathVariable Long patientId,
                                                @RequestParam(defaultValue = "" + LongitudinalAnalysisService.DEFAULT_LIMIT) int limit) {
         return analysis.summarize(patientId, limit);

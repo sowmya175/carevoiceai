@@ -1,4 +1,4 @@
-import type { ClinicalAgentResponse, SessionHistory, SessionStart, VoiceMonitoringResponse } from "../types/monitoring.ts";
+import type { ClinicalAgentResponse, DailyCheckIn, SessionHistory, SessionStart } from "../types/monitoring.ts";
 import type { PatientLongitudinalResponse } from "../types/longitudinal.ts";
 import { isLongitudinalResponse } from "./longitudinalResponse.ts";
 
@@ -20,6 +20,69 @@ export function apiBaseUrl(): string {
   return value.replace(/\/$/, "");
 }
 
+/**
+ * CSRF for this React client:
+ * The session cookie (JSESSIONID) is HttpOnly, so JavaScript never reads it.
+ * Mutating requests first GET /api/auth/csrf with credentials. That response
+ * JSON contains the header name and token stored in the server session.
+ * The token is kept in memory and sent as that header. It is not written to
+ * localStorage or document.cookie. Login rotates the token, so the memory
+ * copy is dropped after login and logout and loaded again on the next POST.
+ */
+let csrfToken: { headerName: string; token: string } | null = null;
+
+export function resetCsrf(): void {
+  csrfToken = null;
+}
+
+export async function apiFetch(path: string, init: RequestInit = {}): Promise<Response> {
+  const headers = headerRecord(init.headers);
+  const method = (init.method ?? "GET").toUpperCase();
+  if (method !== "GET" && method !== "HEAD" && method !== "OPTIONS") {
+    const csrf = await loadCsrf();
+    headers[csrf.headerName] = csrf.token;
+  }
+  return fetch(`${apiBaseUrl()}${path}`, {
+    ...init,
+    headers,
+    credentials: "include",
+  });
+}
+
+async function loadCsrf(): Promise<{ headerName: string; token: string }> {
+  if (csrfToken) {
+    return csrfToken;
+  }
+  const response = await fetch(`${apiBaseUrl()}/api/auth/csrf`, {
+    credentials: "include",
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+  });
+  const body = await readJson(response);
+  if (!response.ok || !isRecord(body) || typeof body.headerName !== "string" || typeof body.token !== "string") {
+    throw new MonitoringApiError(response.status, "We couldn't start a secure session. Please try again.");
+  }
+  csrfToken = { headerName: body.headerName, token: body.token };
+  return csrfToken;
+}
+
+function headerRecord(init?: HeadersInit): Record<string, string> {
+  if (!init) {
+    return {};
+  }
+  if (init instanceof Headers) {
+    const headers: Record<string, string> = {};
+    init.forEach((value, key) => {
+      headers[key] = value;
+    });
+    return headers;
+  }
+  if (Array.isArray(init)) {
+    return Object.fromEntries(init);
+  }
+  return { ...init };
+}
+
 export function messageForFailedResponse(status: number, backendMessage?: string): string {
   if (status === 422) {
     return "We couldn't understand the recording. Please try again.";
@@ -33,27 +96,20 @@ export function messageForFailedResponse(status: number, backendMessage?: string
   return "Something went wrong. Please try again or use text input.";
 }
 
-export async function createDevelopmentPatient(): Promise<number> {
-  const response = await fetch(`${apiBaseUrl()}/api/patients`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      displayName: "Daily Check-In",
-      monitoringPlan: "Daily monitoring",
-    }),
+export async function fetchTodayCheckIn(): Promise<DailyCheckIn> {
+  const response = await apiFetch("/api/me/check-in/today", {
+    headers: { Accept: "application/json" },
+    cache: "no-store",
   });
   const body = await readJson(response);
-  if (!response.ok || !isRecord(body) || typeof body.id !== "number") {
-    throw new MonitoringApiError(response.status, "We couldn't start your check-in. Please try again.");
+  if (!response.ok || !isDailyCheckIn(body)) {
+    throw new MonitoringApiError(response.status, "We couldn't check today's check-in. Please try again.");
   }
-  return body.id;
+  return body;
 }
 
-export async function startMonitoringSession(patientId: number): Promise<SessionStart> {
-  const response = await fetch(`${apiBaseUrl()}/api/monitoring/patients/${patientId}/sessions`, {
+export async function startTodayCheckIn(): Promise<SessionStart> {
+  const response = await apiFetch("/api/me/check-in/today", {
     method: "POST",
     headers: { Accept: "application/json" },
   });
@@ -64,24 +120,24 @@ export async function startMonitoringSession(patientId: number): Promise<Session
   return body;
 }
 
-export async function sendVoiceMessage(sessionId: number, audio: Blob): Promise<VoiceMonitoringResponse> {
+export async function transcribeVoice(sessionId: number, audio: Blob): Promise<string> {
   const form = new FormData();
   form.append("audio", new File([audio], fileNameFor(audio.type), { type: audio.type || "application/octet-stream" }));
-  const response = await fetch(`${apiBaseUrl()}/api/monitoring/sessions/${sessionId}/voice`, {
+  const response = await apiFetch(`/api/monitoring/sessions/${sessionId}/voice/transcribe`, {
     method: "POST",
     headers: { Accept: "application/json" },
     body: form,
   });
   const body = await readJson(response);
-  if (!response.ok || !isVoiceResponse(body)) {
+  if (!response.ok || !isRecord(body) || typeof body.transcript !== "string" || body.transcript.trim().length === 0) {
     const backendMessage = isRecord(body) && typeof body.error === "string" ? body.error : undefined;
     throw new MonitoringApiError(response.status, messageForFailedResponse(response.status, backendMessage));
   }
-  return body;
+  return body.transcript;
 }
 
 export async function fetchSessionHistory(sessionId: number, signal?: AbortSignal): Promise<SessionHistory> {
-  const response = await fetch(`${apiBaseUrl()}/api/monitoring/sessions/${sessionId}/history`, {
+  const response = await apiFetch(`/api/monitoring/sessions/${sessionId}/history`, {
     headers: { Accept: "application/json" },
     cache: "no-store",
     signal,
@@ -94,7 +150,7 @@ export async function fetchSessionHistory(sessionId: number, signal?: AbortSigna
 }
 
 export async function fetchLongitudinalSummary(patientId: number, signal?: AbortSignal): Promise<PatientLongitudinalResponse> {
-  const response = await fetch(`${apiBaseUrl()}/api/patients/${patientId}/longitudinal-summary?limit=30`, {
+  const response = await apiFetch(`/api/patients/${patientId}/longitudinal-summary?limit=30`, {
     headers: { Accept: "application/json" }, cache: "no-store", signal,
   });
   const body = await readJson(response);
@@ -107,14 +163,25 @@ export async function fetchLongitudinalSummary(patientId: number, signal?: Abort
   return body;
 }
 
+export async function confirmVoiceTranscript(sessionId: number, transcript: string): Promise<ClinicalAgentResponse> {
+  return postMessage(sessionId, { message: transcript, inputMode: "VOICE" });
+}
+
 export async function sendTextMessage(sessionId: number, message: string): Promise<ClinicalAgentResponse> {
-  const response = await fetch(`${apiBaseUrl()}/api/monitoring/sessions/${sessionId}/messages`, {
+  return postMessage(sessionId, { message });
+}
+
+async function postMessage(
+  sessionId: number,
+  payload: { message: string; inputMode?: "VOICE" },
+): Promise<ClinicalAgentResponse> {
+  const response = await apiFetch(`/api/monitoring/sessions/${sessionId}/messages`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify(payload),
   });
   const body = await readJson(response);
   if (!response.ok || !isAgentResponse(body)) {
@@ -174,6 +241,18 @@ function isSessionStart(value: unknown): value is SessionStart {
   return isRecord(value) && typeof value.sessionId === "number";
 }
 
+function isDailyCheckIn(value: unknown): value is DailyCheckIn {
+  if (!isRecord(value)) return false;
+  const status = value.status;
+  return typeof value.checkInDate === "string"
+    && typeof value.currentDate === "string"
+    && typeof value.timezone === "string"
+    && (status === "NOT_STARTED" || status === "IN_PROGRESS" || status === "COMPLETED" || status === "READY_FOR_REVIEW")
+    && (value.sessionId === null || typeof value.sessionId === "number")
+    && (value.monitoringPlanName === null || typeof value.monitoringPlanName === "string")
+    && typeof value.previousDaySession === "boolean";
+}
+
 function isAgentResponse(value: unknown): value is ClinicalAgentResponse {
   return isRecord(value)
     && typeof value.sessionId === "number"
@@ -194,8 +273,3 @@ function isSessionHistory(value: unknown): value is SessionHistory {
       && typeof turn.timestamp === "string" && Number.isFinite(Date.parse(turn.timestamp)));
 }
 
-function isVoiceResponse(value: unknown): value is VoiceMonitoringResponse {
-  return isRecord(value)
-    && typeof value.transcript === "string"
-    && isAgentResponse(value.agentResponse);
-}

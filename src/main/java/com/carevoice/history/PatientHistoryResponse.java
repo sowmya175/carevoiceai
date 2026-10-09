@@ -3,6 +3,7 @@ package com.carevoice.history;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,6 +16,9 @@ public record PatientHistoryResponse(
             OffsetDateTime startedAt,
             SessionStatus status,
             RiskLevel riskLevel,
-            long turnCount
+            long turnCount,
+            LocalDate checkInDate,
+            String monitoringPlanName,
+            OffsetDateTime completedAt
     ) {}
 }

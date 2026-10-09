@@ -36,11 +36,17 @@ public class GroqWhisperAudioTranscriptionService implements AudioTranscriptionS
 
     @Override
     public TranscriptionResult transcribe(byte[] audio, String originalFilename, String contentType) {
+        return transcribe(audio, originalFilename, contentType, null);
+    }
+
+    @Override
+    public TranscriptionResult transcribe(
+            byte[] audio, String originalFilename, String contentType, String prompt) {
         try {
             GroqTranscriptionResponse response = groq.post()
                     .uri("/audio/transcriptions")
                     .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .body(multipartBody(audio, originalFilename, contentType))
+                    .body(multipartBody(audio, originalFilename, contentType, prompt))
                     .retrieve()
                     .body(GroqTranscriptionResponse.class);
             String text = response == null ? null : response.text();
@@ -54,6 +60,11 @@ public class GroqWhisperAudioTranscriptionService implements AudioTranscriptionS
     }
 
     MultiValueMap<String, Object> multipartBody(byte[] audio, String originalFilename, String contentType) {
+        return multipartBody(audio, originalFilename, contentType, null);
+    }
+
+    MultiValueMap<String, Object> multipartBody(
+            byte[] audio, String originalFilename, String contentType, String prompt) {
         String filename = uploadFilename(originalFilename, contentType);
         ByteArrayResource file = new ByteArrayResource(audio) {
             @Override
@@ -66,7 +77,10 @@ public class GroqWhisperAudioTranscriptionService implements AudioTranscriptionS
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", new HttpEntity<>(file, fileHeaders));
         body.add("model", properties.getGroq().getModel());
-        addIfPresent(body, "prompt", properties.getTranscriptionPrompt());
+        String effectivePrompt = prompt == null || prompt.isBlank()
+                ? properties.getTranscriptionPrompt()
+                : prompt;
+        addIfPresent(body, "prompt", effectivePrompt);
         addIfPresent(body, "language", properties.getLanguage());
         body.add("temperature", "0");
         return body;

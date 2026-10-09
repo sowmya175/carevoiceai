@@ -1,0 +1,29 @@
+{
+  "model" : "DeterministicPlanGenerationModel",
+  "split" : "test",
+  "examples" : 10,
+  "fieldPrecision" : 1.0,
+  "fieldRecall" : 1.0,
+  "fieldF1" : 1.0,
+  "duplicateFieldRate" : 0.0,
+  "unknownFieldRate" : 0.0,
+  "unsupportedFieldRate" : 0.0,
+  "structuredOutputValidityRate" : 1.0,
+  "conditionFamilyAccuracy" : 0.2,
+  "requiredFlagAccuracy" : 1.0,
+  "wordingSafetyRate" : 1.0,
+  "challenge" : {
+    "split" : "challenge",
+    "examples" : 12,
+    "fieldPrecision" : 0.7391304347826086,
+    "fieldRecall" : 1.0,
+    "fieldF1" : 0.85,
+    "duplicateFieldRate" : 0.0,
+    "unknownFieldRate" : 0.0,
+    "unsupportedFieldRate" : 0.0,
+    "structuredOutputValidityRate" : 1.0,
+    "conditionFamilyAccuracy" : 0.25,
+    "requiredFlagAccuracy" : 1.0,
+    "wordingSafetyRate" : 1.0
+  }
+}

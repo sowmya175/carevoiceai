@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "carevoice-plan-generation-v1.example",
+  "title": "CareVoice plan-generation training example",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "groupId", "datasetVersion", "review", "input", "output"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^cv-plan-(\\d{6}|c-\\d{4})$" },
+    "groupId": { "type": "string" },
+    "datasetVersion": { "const": "carevoice-plan-generation-v1" },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tags", "categoryMismatch"],
+      "properties": {
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "categoryMismatch": { "type": "boolean" }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["conditions", "allowedFields", "existingPlan"],
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["patientConditionId", "conditionName", "category", "primary"],
+            "properties": {
+              "patientConditionId": { "type": "integer", "minimum": 1 },
+              "conditionName": { "type": "string", "minLength": 1 },
+              "category": {
+                "enum": ["WELLNESS", "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY", "OTHER"]
+              },
+              "primary": { "type": "boolean" }
+            }
+          }
+        },
+        "allowedFields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "displayName", "description", "answerType", "minimumValue", "maximumValue", "allowedValues", "categories"],
+            "properties": {
+              "code": { "type": "string" },
+              "displayName": { "type": "string" },
+              "description": { "type": "string" },
+              "answerType": { "enum": ["BOOLEAN", "NUMBER", "TEXT", "SINGLE_CHOICE", "MULTI_CHOICE"] },
+              "minimumValue": { "type": ["number", "null"] },
+              "maximumValue": { "type": ["number", "null"] },
+              "allowedValues": { "type": "array", "items": { "type": "string" } },
+              "categories": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "existingPlan": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["patientSpecific"],
+          "properties": { "patientSpecific": { "type": "boolean" } }
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["conditionFamilies", "questions"],
+      "properties": {
+        "conditionFamilies": { "type": "array", "items": { "type": "string" } },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fieldCode", "questionText", "required", "relevantConditionIds", "rationale"],
+            "properties": {
+              "fieldCode": { "type": "string" },
+              "questionText": { "type": "string", "minLength": 1 },
+              "required": { "type": "boolean" },
+              "relevantConditionIds": { "type": "array", "items": { "type": "integer" } },
+              "rationale": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

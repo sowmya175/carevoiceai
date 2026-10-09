@@ -89,7 +89,10 @@ describe("Patient history", () => {
   it("shows recent sessions newest first with friendly statuses and no risk labels", async () => {
     page();
     const sessions = within(await screen.findByRole("region", { name: "Recent check-ins" }));
+    expect(sessions.getAllByRole("listitem")[0]).toHaveTextContent("October 3, 2026");
+    expect(sessions.getAllByRole("listitem")[0]).toHaveTextContent("Post-Operative Recovery Demo");
     expect(sessions.getAllByRole("listitem")[0]).toHaveTextContent("Submitted for review");
+    expect(sessions.getAllByRole("listitem")[2]).not.toHaveTextContent("October 1, 2026");
     expect(sessions.getAllByRole("listitem")[0]).toHaveTextContent("2 answered turns");
     expect(sessions.getAllByRole("button", { name: /View details/ })).toHaveLength(3);
     expect(document.body.textContent).not.toMatch(/GREEN|YELLOW|RED|READY_FOR_REVIEW|riskLevel/);
@@ -103,7 +106,7 @@ describe("Patient history", () => {
     expect(await screen.findByText("I kept waking up.")).toBeInTheDocument();
     expect(screen.getByText("How did you sleep?")).toBeInTheDocument();
     expect(fetch).toHaveBeenCalledWith(expect.stringContaining("/api/monitoring/sessions/103/history"), expect.anything());
-    expect(document.body.textContent).not.toMatch(/PRIVATE CLINICAL NOTE|RED|extractedFacts|Gemini|provider/);
+    expect(document.body.textContent).not.toMatch(/PRIVATE CLINICAL NOTE|RED|extractedFacts|Gemini|provider|Escalation reason|Monitoring flag/);
     expect(writes).not.toHaveBeenCalled();
     await userEvent.click(screen.getByRole("button", { name: "Back to health history" }));
     expect(await screen.findByRole("region", { name: "Recent check-ins" })).toBeInTheDocument();

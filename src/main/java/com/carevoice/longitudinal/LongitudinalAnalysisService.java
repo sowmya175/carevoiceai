@@ -92,7 +92,8 @@ public class LongitudinalAnalysisService {
                         .toList(),
                 knownObservations(window, SessionFactsSnapshot::temperature),
                 window.stream().map(row -> new SessionSummary(row.sessionId(), row.startedAt(), row.status(),
-                        row.riskLevel(), turnCounts.getOrDefault(row.sessionId(), 0L))).toList());
+                        row.riskLevel(), turnCounts.getOrDefault(row.sessionId(), 0L),
+                        row.checkInDate(), row.monitoringPlanName(), null)).toList());
     }
 
     private static String category(String value, Set<String> supported) {

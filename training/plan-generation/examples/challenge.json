@@ -1,0 +1,1190 @@
+[ {
+  "id" : "cv-plan-c-0001",
+  "groupId" : "challenge-triple",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "multi-condition", "dedupe", "unsupported-omission" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Day-to-day recovery after a coronary bypass operation",
+      "category" : "POST_OPERATIVE",
+      "primary" : true
+    }, {
+      "patientConditionId" : 2,
+      "conditionName" : "Longstanding high blood pressure",
+      "category" : "HYPERTENSION",
+      "primary" : false
+    }, {
+      "patientConditionId" : 3,
+      "conditionName" : "Sugar diabetes, type 2",
+      "category" : "DIABETES",
+      "primary" : false
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "CARDIAC_SURGERY_RECOVERY", "HYPERTENSION", "TYPE_2_DIABETES" ],
+    "questions" : [ {
+      "fieldCode" : "PAIN_SCORE",
+      "questionText" : "How would you rate your pain today from 0 to 10?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1, 2, 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1, 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "SLEEP_QUALITY",
+      "questionText" : "How did you sleep last night?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "TEMPERATURE",
+      "questionText" : "What is your temperature reading?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0002",
+  "groupId" : "challenge-overlap",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "multi-condition", "dedupe", "unsupported-omission" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Post-surgical heart recovery",
+      "category" : "POST_OPERATIVE",
+      "primary" : true
+    }, {
+      "patientConditionId" : 2,
+      "conditionName" : "Blood-pressure treatment monitoring",
+      "category" : "HYPERTENSION",
+      "primary" : false
+    }, {
+      "patientConditionId" : 3,
+      "conditionName" : "Diabetes medication monitoring",
+      "category" : "DIABETES",
+      "primary" : false
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "CARDIAC_SURGERY_RECOVERY", "HYPERTENSION", "TYPE_2_DIABETES" ],
+    "questions" : [ {
+      "fieldCode" : "PAIN_SCORE",
+      "questionText" : "How would you rate your pain today from 0 to 10?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1, 2, 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1, 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "SLEEP_QUALITY",
+      "questionText" : "How did you sleep last night?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "TEMPERATURE",
+      "questionText" : "What is your temperature reading?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0003",
+  "groupId" : "challenge-incision",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "unsupported-omission" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Recovery while the surgical incision is still healing",
+      "category" : "POST_OPERATIVE",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "CARDIAC_SURGERY_RECOVERY" ],
+    "questions" : [ {
+      "fieldCode" : "PAIN_SCORE",
+      "questionText" : "How would you rate your pain today from 0 to 10?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "SLEEP_QUALITY",
+      "questionText" : "How did you sleep last night?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "TEMPERATURE",
+      "questionText" : "What is your temperature reading?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0004",
+  "groupId" : "challenge-sparse-htn",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "sparse-catalog", "no-good-fit", "selective", "unsupported-omission" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Elevated blood pressure follow-up",
+      "category" : "HYPERTENSION",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "HYPERTENSION" ],
+    "questions" : [ ]
+  }
+}, {
+  "id" : "cv-plan-c-0005",
+  "groupId" : "challenge-other",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "no-good-fit", "selective" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Feeling off, no named condition",
+      "category" : "OTHER",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "OTHER" ],
+    "questions" : [ {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0006",
+  "groupId" : "challenge-mismatch-postop",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "category-mismatch", "selective", "unsupported-omission" ],
+    "categoryMismatch" : true
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Type 2 diabetes",
+      "category" : "POST_OPERATIVE",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "OTHER" ],
+    "questions" : [ {
+      "fieldCode" : "PAIN_SCORE",
+      "questionText" : "How would you rate your pain today from 0 to 10?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "SLEEP_QUALITY",
+      "questionText" : "How did you sleep last night?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0007",
+  "groupId" : "challenge-mismatch-diabetes",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "category-mismatch", "selective", "unsupported-omission" ],
+    "categoryMismatch" : true
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Replacement of a knee, now in recovery",
+      "category" : "DIABETES",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "OTHER" ],
+    "questions" : [ {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0008",
+  "groupId" : "challenge-reversed",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "multi-condition", "primary-reversal", "dedupe", "unsupported-omission" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Adult-onset diabetes as the main daily context",
+      "category" : "DIABETES",
+      "primary" : true
+    }, {
+      "patientConditionId" : 2,
+      "conditionName" : "Secondary raised blood pressure",
+      "category" : "HYPERTENSION",
+      "primary" : false
+    }, {
+      "patientConditionId" : 3,
+      "conditionName" : "Secondary recovery after a bypass operation",
+      "category" : "POST_OPERATIVE",
+      "primary" : false
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "TYPE_2_DIABETES", "HYPERTENSION", "CARDIAC_SURGERY_RECOVERY" ],
+    "questions" : [ {
+      "fieldCode" : "PAIN_SCORE",
+      "questionText" : "How would you rate your pain today from 0 to 10?",
+      "required" : true,
+      "relevantConditionIds" : [ 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1, 2, 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1, 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "SLEEP_QUALITY",
+      "questionText" : "How did you sleep last night?",
+      "required" : true,
+      "relevantConditionIds" : [ 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "TEMPERATURE",
+      "questionText" : "What is your temperature reading?",
+      "required" : true,
+      "relevantConditionIds" : [ 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0009",
+  "groupId" : "challenge-other-surgical",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "no-good-fit", "selective" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Sternal area after an operation",
+      "category" : "OTHER",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "OTHER" ],
+    "questions" : [ {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0010",
+  "groupId" : "challenge-three-systems",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "multi-condition", "dedupe", "selective", "unsupported-omission" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Weak heart daily check-in",
+      "category" : "CARDIAC",
+      "primary" : true
+    }, {
+      "patientConditionId" : 2,
+      "conditionName" : "Breathing condition, chronic",
+      "category" : "RESPIRATORY",
+      "primary" : false
+    }, {
+      "patientConditionId" : 3,
+      "conditionName" : "Diabetes, adult type",
+      "category" : "DIABETES",
+      "primary" : false
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "CARDIAC", "RESPIRATORY", "TYPE_2_DIABETES" ],
+    "questions" : [ {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1, 2, 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 3 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0011",
+  "groupId" : "challenge-wellness",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "selective" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "Ordinary daily wellness visit",
+      "category" : "WELLNESS",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "PAIN_SCORE",
+      "displayName" : "Pain score",
+      "description" : "Pain score already collected by the daily check-in, from 0 to 10.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 0.0,
+      "maximumValue" : 10.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    }, {
+      "code" : "APPETITE",
+      "displayName" : "Appetite",
+      "description" : "Appetite word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "REDUCED", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE", "DIABETES" ]
+    }, {
+      "code" : "SLEEP_QUALITY",
+      "displayName" : "Sleep",
+      "description" : "Sleep word already accepted by the daily check-in.",
+      "answerType" : "SINGLE_CHOICE",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ "GOOD", "NORMAL", "POOR" ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "TEMPERATURE",
+      "displayName" : "Temperature",
+      "description" : "Temperature number already stored by the daily check-in. No unit is authoritative.",
+      "answerType" : "NUMBER",
+      "minimumValue" : 30.0,
+      "maximumValue" : 115.0,
+      "allowedValues" : [ ],
+      "categories" : [ "WELLNESS", "POST_OPERATIVE" ]
+    }, {
+      "code" : "DIZZINESS_ONSET",
+      "displayName" : "Dizziness onset",
+      "description" : "When dizziness started, as free text already stored by the daily check-in.",
+      "answerType" : "TEXT",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    }, {
+      "code" : "LOSS_OF_CONSCIOUSNESS",
+      "displayName" : "Loss of consciousness",
+      "description" : "Whether loss of consciousness was reported.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "CARDIAC", "POST_OPERATIVE" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "GENERAL_WELLNESS" ],
+    "questions" : [ {
+      "fieldCode" : "PAIN_SCORE",
+      "questionText" : "How would you rate your pain today from 0 to 10?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "APPETITE",
+      "questionText" : "How has your appetite been today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    }, {
+      "fieldCode" : "SLEEP_QUALITY",
+      "questionText" : "How did you sleep last night?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+}, {
+  "id" : "cv-plan-c-0012",
+  "groupId" : "challenge-sparse-knee",
+  "datasetVersion" : "carevoice-plan-generation-v1",
+  "review" : {
+    "tags" : [ "single-condition", "sparse-catalog", "no-good-fit", "unsupported-omission" ],
+    "categoryMismatch" : false
+  },
+  "input" : {
+    "conditions" : [ {
+      "patientConditionId" : 1,
+      "conditionName" : "New knee, early recovery",
+      "category" : "POST_OPERATIVE",
+      "primary" : true
+    } ],
+    "allowedFields" : [ {
+      "code" : "MEDICATION_TAKEN",
+      "displayName" : "Medication taken",
+      "description" : "Whether the patient reported taking prescribed medication.",
+      "answerType" : "BOOLEAN",
+      "minimumValue" : null,
+      "maximumValue" : null,
+      "allowedValues" : [ ],
+      "categories" : [ "POST_OPERATIVE", "HYPERTENSION", "DIABETES", "CARDIAC", "RESPIRATORY" ]
+    } ],
+    "existingPlan" : {
+      "patientSpecific" : false
+    }
+  },
+  "output" : {
+    "conditionFamilies" : [ "ORTHOPEDIC_SURGERY_RECOVERY" ],
+    "questions" : [ {
+      "fieldCode" : "MEDICATION_TAKEN",
+      "questionText" : "Have you taken your prescribed medications today?",
+      "required" : true,
+      "relevantConditionIds" : [ 1 ],
+      "rationale" : "Included as a daily monitoring question from the supplied field list."
+    } ]
+  }
+} ]

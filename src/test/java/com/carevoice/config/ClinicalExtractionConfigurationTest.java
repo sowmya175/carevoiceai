@@ -1,6 +1,7 @@
 package com.carevoice.config;
 
 import com.carevoice.agent.ClinicalExtractionPrompt;
+import com.carevoice.agent.ClinicalExtractionRoutingPolicy;
 import com.carevoice.agent.ClinicalExtractionService;
 import com.carevoice.agent.ClinicalExtractionValidator;
 import com.carevoice.agent.FallbackClinicalExtractionService;
@@ -19,6 +20,7 @@ class ClinicalExtractionConfigurationTest {
                     RuleBasedClinicalExtractionService.class,
                     GeminiClinicalExtractionService.class,
                     FallbackClinicalExtractionService.class,
+                    ClinicalExtractionRoutingPolicy.class,
                     ClinicalExtractionPrompt.class,
                     ClinicalExtractionValidator.class);
 

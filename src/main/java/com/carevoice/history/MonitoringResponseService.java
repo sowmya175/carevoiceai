@@ -2,20 +2,31 @@ package com.carevoice.history;
 
 import com.carevoice.agent.ClinicalAgentResponse;
 import com.carevoice.domain.InputMode;
+import com.carevoice.observability.VoiceTiming;
+import com.carevoice.service.ClinicalMonitoringAgent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MonitoringResponseService {
-    private final MonitoringHistoryRecorder recorder;
-    private final ClinicalNoteAttacher notes;
+    private static final Logger log = LoggerFactory.getLogger(MonitoringResponseService.class);
 
-    public MonitoringResponseService(MonitoringHistoryRecorder recorder, ClinicalNoteAttacher notes) {
+    private final MonitoringHistoryRecorder recorder;
+    private final ClinicalMonitoringAgent agent;
+
+    public MonitoringResponseService(MonitoringHistoryRecorder recorder, ClinicalMonitoringAgent agent) {
         this.recorder = recorder;
-        this.notes = notes;
+        this.agent = agent;
     }
 
     public ClinicalAgentResponse acceptText(Long sessionId, String message) {
-        return accept(sessionId, message, InputMode.TEXT);
+        long started = System.nanoTime();
+        try {
+            return accept(sessionId, message, InputMode.TEXT);
+        } finally {
+            VoiceTiming.log(log, "totalMs=" + VoiceTiming.millisSince(started) + " sessionId=" + sessionId);
+        }
     }
 
     public ClinicalAgentResponse acceptTranscript(Long sessionId, String transcript) {
@@ -24,7 +35,6 @@ public class MonitoringResponseService {
 
     private ClinicalAgentResponse accept(Long sessionId, String patientResponse, InputMode inputMode) {
         RecordedTurn recorded = recorder.record(sessionId, patientResponse, inputMode);
-        notes.attach(recorded);
-        return recorded.response();
+        return agent.present(sessionId, recorded.question(), patientResponse, recorded.response());
     }
 }

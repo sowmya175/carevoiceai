@@ -1,15 +1,7 @@
 const STORAGE_KEY = "carevoice.checkin";
 
 export interface SavedCheckIn {
-  patientId: number;
   sessionId: number;
-}
-
-export function knownPatientId(): number | null {
-  const saved = loadCheckIn();
-  if (saved) return saved.patientId;
-  const configured = Number(import.meta.env.VITE_PATIENT_ID);
-  return Number.isSafeInteger(configured) && configured > 0 ? configured : null;
 }
 
 export function loadCheckIn(): SavedCheckIn | null {
@@ -22,17 +14,14 @@ export function loadCheckIn(): SavedCheckIn | null {
     if (!isSavedCheckIn(parsed)) {
       return null;
     }
-    return { patientId: parsed.patientId, sessionId: parsed.sessionId };
+    return { sessionId: parsed.sessionId };
   } catch {
     return null;
   }
 }
 
 export function saveCheckIn(value: SavedCheckIn): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    patientId: value.patientId,
-    sessionId: value.sessionId,
-  }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ sessionId: value.sessionId }));
 }
 
 export function clearCheckIn(): void {
@@ -44,5 +33,5 @@ function isSavedCheckIn(value: unknown): value is SavedCheckIn {
     return false;
   }
   const record = value as Record<string, unknown>;
-  return typeof record.patientId === "number" && typeof record.sessionId === "number";
+  return typeof record.sessionId === "number";
 }

@@ -241,6 +241,6 @@ class LongitudinalAnalysisServiceTest {
     static SessionFactsSnapshot row(long id, Integer pain, String sleep, String appetite, Boolean medication,
                                     Boolean dizziness, Boolean breath, Boolean loc, String onset, Double temperature) {
         return new SessionFactsSnapshot(id, date(id), SessionStatus.COMPLETED, RiskLevel.GREEN,
-                pain, sleep, appetite, medication, dizziness, breath, loc, onset, temperature);
+                pain, sleep, appetite, medication, dizziness, breath, loc, onset, temperature, null, null);
     }
 }

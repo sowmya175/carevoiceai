@@ -26,6 +26,7 @@ class LongitudinalRepositoryTest {
     static void startDatabase() {
         factory = new Configuration()
                 .addAnnotatedClass(Patient.class).addAnnotatedClass(MonitoringSession.class)
+                .addAnnotatedClass(MonitoringPlan.class).addAnnotatedClass(SessionPlanQuestion.class)
                 .addAnnotatedClass(MonitoringTurn.class).addAnnotatedClass(ClinicalNote.class)
                 .setProperty("hibernate.connection.driver_class", "org.h2.Driver")
                 .setProperty("hibernate.connection.url", "jdbc:h2:mem:longitudinal;DB_CLOSE_DELAY=-1")

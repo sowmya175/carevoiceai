@@ -1,8 +1,10 @@
 package com.carevoice.service;
 
 import com.carevoice.domain.MonitoringField;
+import com.carevoice.domain.MonitoringPlan;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.domain.Patient;
+import com.carevoice.domain.SessionPlanQuestion;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +16,8 @@ class DeferredFieldsPersistenceTest {
         try (var factory = new Configuration()
                 .addAnnotatedClass(Patient.class)
                 .addAnnotatedClass(MonitoringSession.class)
+                .addAnnotatedClass(MonitoringPlan.class)
+                .addAnnotatedClass(SessionPlanQuestion.class)
                 .setProperty("hibernate.connection.driver_class", "org.h2.Driver")
                 .setProperty("hibernate.connection.url", "jdbc:h2:mem:deferrals;DB_CLOSE_DELAY=-1")
                 .setProperty("hibernate.hbm2ddl.auto", "create-drop")

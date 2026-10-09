@@ -52,6 +52,8 @@ public class MonitoringHistoryQuery {
                 session.getStatus(),
                 session.getNextQuestion(),
                 session.getStatus() != SessionStatus.IN_PROGRESS,
+                session.getMonitoringPlanName(),
+                session.getCheckInDate(),
                 history);
     }
 
@@ -72,7 +74,10 @@ public class MonitoringHistoryQuery {
                         session.getCreatedAt(),
                         session.getStatus(),
                         session.getRiskLevel(),
-                        turnCounts.getOrDefault(session.getId(), 0L)))
+                        turnCounts.getOrDefault(session.getId(), 0L),
+                        session.getCheckInDate(),
+                        session.getMonitoringPlanName(),
+                        session.getCompletedAt()))
                 .toList();
         return new PatientHistoryResponse(patientId, summaries);
     }

@@ -9,7 +9,10 @@ import com.carevoice.config.CareVoiceVoiceProperties;
 import com.carevoice.domain.MonitoringField;
 import com.carevoice.domain.RiskLevel;
 import com.carevoice.domain.SessionStatus;
+import com.carevoice.domain.MonitoringSession;
+import com.carevoice.domain.Patient;
 import com.carevoice.history.MonitoringResponseService;
+import com.carevoice.repository.MonitoringSessionRepository;
 import com.carevoice.service.MonitoringAgentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -17,6 +20,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +41,7 @@ class VoiceMonitoringControllerTest {
     void validUploadReturnsTranscriptAndAgentResponse() throws Exception {
         AudioTranscriptionService transcription = mock(AudioTranscriptionService.class);
         MonitoringResponseService responses = mock(MonitoringResponseService.class);
-        when(transcription.transcribe(any(), any(), eq("audio/wav")))
+        when(transcription.transcribe(any(), any(), eq("audio/wav"), any()))
                 .thenReturn(new TranscriptionResult("I feel dizzy today and my pain is about six.", "gemini-3.5-transcribe"));
         when(responses.acceptTranscript(1L, "I feel dizzy today and my pain is about six."))
                 .thenReturn(agentResponse());
@@ -51,7 +56,7 @@ class VoiceMonitoringControllerTest {
                 .andExpect(jsonPath("$.agentResponse.status").value("IN_PROGRESS"))
                 .andExpect(jsonPath("$.agentResponse.conversationComplete").value(false));
 
-        verify(transcription).transcribe(any(), any(), eq("audio/wav"));
+        verify(transcription).transcribe(any(), any(), eq("audio/wav"), any());
         verify(responses).acceptTranscript(1L, "I feel dizzy today and my pain is about six.");
     }
 
@@ -89,7 +94,7 @@ class VoiceMonitoringControllerTest {
     void blankTranscriptReturnsControlledError() throws Exception {
         AudioTranscriptionService transcription = mock(AudioTranscriptionService.class);
         MonitoringResponseService responses = mock(MonitoringResponseService.class);
-        when(transcription.transcribe(any(), any(), eq("audio/wav")))
+        when(transcription.transcribe(any(), any(), eq("audio/wav"), any()))
                 .thenReturn(new TranscriptionResult("   ", "gemini-3.5-transcribe"));
 
         mockMvc(service(transcription, responses, 20)).perform(multipart("/api/monitoring/sessions/1/voice")
@@ -103,7 +108,7 @@ class VoiceMonitoringControllerTest {
     void providerFailureReturnsControlledError() throws Exception {
         AudioTranscriptionService transcription = mock(AudioTranscriptionService.class);
         MonitoringResponseService responses = mock(MonitoringResponseService.class);
-        when(transcription.transcribe(any(), any(), any())).thenThrow(new AudioTranscriptionException());
+        when(transcription.transcribe(any(), any(), any(), any())).thenThrow(new AudioTranscriptionException());
 
         mockMvc(service(transcription, responses, 20)).perform(multipart("/api/monitoring/sessions/1/voice")
                         .file(wav("audio/wav", new byte[]{1})))
@@ -129,6 +134,41 @@ class VoiceMonitoringControllerTest {
                 .andExpect(jsonPath("$.clinicalNote").doesNotExist())
                 .andExpect(jsonPath("$.extractedFacts").doesNotExist());
         verify(responses).acceptText(3L, "I feel dizzy today and my pain is about six.");
+        verify(responses, never()).acceptTranscript(any(), any());
+    }
+
+    @Test
+    void transcriptionEndpointReturnsTextWithoutClinicalProcessing() throws Exception {
+        AudioTranscriptionService transcription = mock(AudioTranscriptionService.class);
+        MonitoringResponseService responses = mock(MonitoringResponseService.class);
+        when(transcription.transcribe(any(), any(), eq("audio/wav"), any()))
+                .thenReturn(new TranscriptionResult("My pain is five.", "whisper-large-v3-turbo"));
+
+        mockMvc(service(transcription, responses, 20)).perform(multipart("/api/monitoring/sessions/1/voice/transcribe")
+                        .file(wav("audio/wav", new byte[]{1, 2, 3})))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transcript").value("My pain is five."))
+                .andExpect(jsonPath("$.agentResponse").doesNotExist());
+
+        verify(responses, never()).acceptTranscript(any(), any());
+        verify(responses, never()).acceptText(any(), any());
+    }
+
+    @Test
+    void confirmedVoiceTranscriptUsesTheSharedVoicePath() throws Exception {
+        MonitoringResponseService responses = mock(MonitoringResponseService.class);
+        when(responses.acceptTranscript(3L, "My pain is five.")).thenReturn(agentResponse());
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(
+                new MonitoringController(mock(MonitoringAgentService.class), responses)).build();
+
+        mockMvc.perform(post("/api/monitoring/sessions/3/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"message\":\"My pain is five.\",\"inputMode\":\"VOICE\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nextQuestion").value("When did the dizziness start?"));
+
+        verify(responses).acceptTranscript(3L, "My pain is five.");
+        verify(responses, never()).acceptText(any(), any());
     }
 
     @Test
@@ -152,7 +192,11 @@ class VoiceMonitoringControllerTest {
             int maxFileSizeMb) {
         CareVoiceVoiceProperties properties = new CareVoiceVoiceProperties();
         properties.setMaxFileSizeMb(maxFileSizeMb);
-        return new VoiceMonitoringService(new VoiceUploadValidator(properties), transcription, responses);
+        MonitoringSession session = new MonitoringSession(new Patient("Test", "Daily monitoring"));
+        session.setNextQuestion("Tell me how you are feeling today in your own words.");
+        MonitoringSessionRepository sessions = mock(MonitoringSessionRepository.class);
+        when(sessions.findById(org.mockito.ArgumentMatchers.any())).thenReturn(Optional.of(session));
+        return new VoiceMonitoringService(new VoiceUploadValidator(properties), transcription, responses, sessions);
     }
 
     private static MockMultipartFile wav(String contentType, byte[] bytes) {

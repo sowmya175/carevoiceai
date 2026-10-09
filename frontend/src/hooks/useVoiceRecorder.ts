@@ -5,6 +5,8 @@ export type RecorderState = "idle" | "recording" | "recorded" | "uploading" | "e
 
 const UNSUPPORTED = "Voice recording is not supported in this browser. Please use text input.";
 const PERMISSION_DENIED = "Microphone access is needed to record your response. You can use text input instead.";
+const TOO_SHORT = "That recording was too short. Please try again.";
+const MIN_RECORDING_MS = 400;
 
 export interface VoiceRecorderController {
   state: RecorderState;
@@ -28,12 +30,17 @@ export function useVoiceRecorder(): VoiceRecorderController {
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<number | null>(null);
+  const stopTimerRef = useRef<number | null>(null);
+  const startedAtRef = useRef(0);
+  const generationRef = useRef(0);
   const supported = canRecord();
 
   useEffect(() => {
     return () => {
+      generationRef.current += 1;
       releaseStream();
       clearTimer();
+      clearStopTimer();
     };
   }, []);
 
@@ -49,9 +56,19 @@ export function useVoiceRecorder(): VoiceRecorderController {
     }
   }
 
+  function clearStopTimer() {
+    if (stopTimerRef.current !== null) {
+      window.clearTimeout(stopTimerRef.current);
+      stopTimerRef.current = null;
+    }
+  }
+
   async function startRecording() {
+    const generation = generationRef.current + 1;
+    generationRef.current = generation;
     setErrorMessage(null);
     setBlob(null);
+    clearStopTimer();
     if (!canRecord()) {
       setState("error");
       setErrorMessage(UNSUPPORTED);
@@ -65,35 +82,57 @@ export function useVoiceRecorder(): VoiceRecorderController {
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (generationRef.current !== generation) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
       streamRef.current = stream;
       const recorder = new MediaRecorder(stream, { mimeType });
       chunksRef.current = [];
       recorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
+        if (generationRef.current === generation && event.data.size > 0) {
           chunksRef.current.push(event.data);
         }
       };
+      recorder.onstart = () => {
+        if (generationRef.current !== generation) {
+          return;
+        }
+        startedAtRef.current = Date.now();
+        setElapsedSeconds(0);
+        setState("recording");
+        timerRef.current = window.setInterval(() => {
+          setElapsedSeconds(Math.floor((Date.now() - startedAtRef.current) / 1000));
+        }, 250);
+      };
       recorder.onstop = () => {
+        if (generationRef.current !== generation) {
+          return;
+        }
         const recordedType = recorder.mimeType || mimeType;
-        setBlob(new Blob(chunksRef.current, { type: recordedType }));
-        setState("recorded");
+        const recorded = new Blob(chunksRef.current, { type: recordedType });
         releaseStream();
         clearTimer();
+        if (recorded.size === 0) {
+          setBlob(null);
+          setState("error");
+          setErrorMessage(TOO_SHORT);
+          return;
+        }
+        setBlob(recorded);
+        setState("recorded");
       };
       recorder.onerror = () => {
+        if (generationRef.current !== generation) {
+          return;
+        }
         setState("error");
         setErrorMessage(UNSUPPORTED);
         releaseStream();
         clearTimer();
       };
       recorderRef.current = recorder;
-      recorder.start();
-      const startedAt = Date.now();
-      setElapsedSeconds(0);
-      setState("recording");
-      timerRef.current = window.setInterval(() => {
-        setElapsedSeconds(Math.floor((Date.now() - startedAt) / 1000));
-      }, 250);
+      recorder.start(250);
     } catch (error) {
       releaseStream();
       clearTimer();
@@ -105,12 +144,35 @@ export function useVoiceRecorder(): VoiceRecorderController {
 
   function stopRecording() {
     const recorder = recorderRef.current;
-    if (recorder && recorder.state === "recording") {
-      recorder.stop();
+    if (!recorder || recorder.state !== "recording" || stopTimerRef.current !== null) {
+      return;
     }
+    const elapsed = Date.now() - startedAtRef.current;
+    const finish = () => {
+      stopTimerRef.current = null;
+      if (recorder.state === "recording") {
+        recorder.stop();
+      }
+    };
+    if (elapsed >= MIN_RECORDING_MS) {
+      finish();
+      return;
+    }
+    stopTimerRef.current = window.setTimeout(finish, MIN_RECORDING_MS - elapsed);
   }
 
   function clearRecording() {
+    generationRef.current += 1;
+    clearStopTimer();
+    const recorder = recorderRef.current;
+    if (recorder && recorder.state === "recording") {
+      recorder.onstop = null;
+      recorder.stop();
+    }
+    releaseStream();
+    clearTimer();
+    recorderRef.current = null;
+    chunksRef.current = [];
     setBlob(null);
     setElapsedSeconds(0);
     setErrorMessage(null);

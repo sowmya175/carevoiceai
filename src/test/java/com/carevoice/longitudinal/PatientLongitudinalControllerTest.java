@@ -60,7 +60,7 @@ class PatientLongitudinalControllerTest {
         var timestamp = OffsetDateTime.parse("2026-10-01T09:00:00-04:00");
         when(sessions.findRecentFacts(eq(7L), anyList(), any())).thenReturn(List.of(new SessionFactsSnapshot(
                 101L, timestamp, SessionStatus.READY_FOR_REVIEW, RiskLevel.YELLOW,
-                2, "poor", "reduced", false, true, null, false, "This morning.", 98.6)));
+                2, "poor", "reduced", false, true, null, false, "This morning.", 98.6, null, null)));
         when(turns.countByPatientAndSessionIds(7L, List.of(101L))).thenReturn(List.<Object[]>of(new Object[]{101L, 3L}));
         mvc.perform(get("/api/patients/7/longitudinal-summary").param("limit", "1"))
                 .andExpect(status().isOk())

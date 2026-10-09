@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { fetchSessionHistory } from "../api/monitoringApi.ts";
 import type { SessionHistory } from "../types/monitoring.ts";
-import { formatDate, statusLabel } from "./historyFormat.ts";
+import { formatCalendarDate, formatDate, statusLabel } from "./historyFormat.ts";
 
 export function SessionHistoryDetail({ patientId, sessionId, onBack }: {
   patientId: number; sessionId: number; onBack: () => void;
@@ -26,7 +26,8 @@ export function SessionHistoryDetail({ patientId, sessionId, onBack }: {
     <button type="button" className="secondary" onClick={onBack}>Back to health history</button>
     <header className="history-header"><p className="eyebrow">Your saved responses</p>
       <h1 ref={heading} tabIndex={-1}>Check-in details</h1>
-      {history && <p className="subtitle">{formatDate(history.startedAt, true)} · {statusLabel(history.status)}</p>}
+      {history && <p className="subtitle">{history.checkInDate ? formatCalendarDate(history.checkInDate) : formatDate(history.startedAt, true)} · {statusLabel(history.status)}</p>}
+      {history?.monitoringPlanName ? <p>Monitoring Plan: {history.monitoringPlanName}</p> : null}
     </header>
     {error ? <div className="history-card"><p role="alert">We couldn't load this check-in. Please try again.</p>
       <button type="button" className="secondary" onClick={() => setAttempt((value) => value + 1)}>Try again</button></div>

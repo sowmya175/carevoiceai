@@ -24,6 +24,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -36,7 +38,7 @@ class VoiceMonitoringServiceTest {
         AudioTranscriptionService transcription = (audio, filename, contentType) ->
                 new TranscriptionResult("   \n  ", "gemini-3.5-transcribe");
         MonitoringResponseService responses = mock(MonitoringResponseService.class);
-        VoiceMonitoringService service = service(transcription, responses, properties(20));
+        VoiceMonitoringService service = service(transcription, responses, properties(20), sessions());
 
         assertThatThrownBy(() -> service.process(4L, wav(new byte[]{1, 2, 3})))
                 .isInstanceOf(BlankTranscriptionException.class)
@@ -50,7 +52,7 @@ class VoiceMonitoringServiceTest {
             throw new AudioTranscriptionException();
         };
         MonitoringResponseService responses = mock(MonitoringResponseService.class);
-        VoiceMonitoringService service = service(transcription, responses, properties(20));
+        VoiceMonitoringService service = service(transcription, responses, properties(20), sessions());
 
         assertThatThrownBy(() -> service.process(4L, wav(new byte[]{1, 2, 3})))
                 .isInstanceOf(AudioTranscriptionException.class)
@@ -80,7 +82,8 @@ class VoiceMonitoringServiceTest {
         VoiceMonitoringResponse response = service(
                 transcription,
                 HistoryTestSupport.responses(sessions, agent),
-                properties(20))
+                properties(20),
+                sessions)
                 .process(1L, wav(new byte[]{1, 2, 3}));
 
         assertThat(response.transcript()).isEqualTo("I feel dizzy today and my pain is around six.");
@@ -97,7 +100,11 @@ class VoiceMonitoringServiceTest {
     void passesCanonicalMimeTypeAndTrimmedTranscriptToTheAgent() {
         AudioTranscriptionService transcription = mock(AudioTranscriptionService.class);
         MonitoringResponseService responses = mock(MonitoringResponseService.class);
-        when(transcription.transcribe(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("audio/wav")))
+        when(transcription.transcribe(
+                org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.eq("audio/wav"),
+                org.mockito.ArgumentMatchers.any()))
                 .thenReturn(new TranscriptionResult("  I feel dizzy. ", "gemini-3.5-transcribe"));
         ClinicalAgentResponse agentResponse = new ClinicalAgentResponse(
                 8L,
@@ -111,11 +118,48 @@ class VoiceMonitoringServiceTest {
         when(responses.acceptTranscript(8L, "I feel dizzy.")).thenReturn(agentResponse);
 
         MockMultipartFile audio = new MockMultipartFile("audio", "note.wav", "audio/x-wav", new byte[]{9});
-        VoiceMonitoringResponse response = service(transcription, responses, properties(20)).process(8L, audio);
+        VoiceMonitoringResponse response = service(transcription, responses, properties(20), sessionWithQuestion(8L))
+                .process(8L, audio);
 
         assertThat(response.transcript()).isEqualTo("I feel dizzy.");
         assertThat(response.agentResponse()).isSameAs(agentResponse);
         verify(responses).acceptTranscript(8L, "I feel dizzy.");
+    }
+
+    @Test
+    void transcriptionReturnsTextWithoutCreatingATurnOrChangingFacts() {
+        MonitoringSession session = new MonitoringSession(new Patient("Ada Lovelace", "Daily monitoring"));
+        session.setNextQuestion("On a scale from 0 to 10, how would you rate your pain today?");
+        session.setRequestedField(MonitoringField.PAIN_SCORE);
+        session.setRiskLevel(RiskLevel.YELLOW);
+        session.setEscalationReason("New dizziness/lightheadedness was reported and should be reviewed.");
+        MonitoringSessionRepository sessions = mock(MonitoringSessionRepository.class);
+        when(sessions.findById(9L)).thenReturn(Optional.of(session));
+        AudioTranscriptionService transcription = mock(AudioTranscriptionService.class);
+        org.mockito.ArgumentCaptor<String> prompt = org.mockito.ArgumentCaptor.forClass(String.class);
+        when(transcription.transcribe(any(), any(), eq("audio/wav"), prompt.capture()))
+                .thenReturn(new TranscriptionResult("My pain is five.", "whisper-large-v3-turbo"));
+        MonitoringResponseService responses = mock(MonitoringResponseService.class);
+
+        String transcript = service(transcription, responses, properties(20), sessions)
+                .transcribeOnly(9L, wav(new byte[]{1, 2, 3}));
+
+        assertThat(transcript).isEqualTo("My pain is five.");
+        assertThat(session.getPainScore()).isNull();
+        assertThat(session.getDizziness()).isNull();
+        assertThat(prompt.getValue()).contains("Current question:");
+        assertThat(prompt.getValue()).contains(session.getNextQuestion());
+        assertThat(prompt.getValue()).contains("Transcribe exactly what the patient says.");
+        assertThat(prompt.getValue()).contains("Do not answer the question.");
+        assertThat(prompt.getValue()).contains("Do not infer missing words.");
+        assertThat(prompt.getValue()).contains("number from zero to ten");
+        assertThat(prompt.getValue()).doesNotContain("Ada Lovelace");
+        assertThat(prompt.getValue()).doesNotContain("Daily monitoring");
+        assertThat(prompt.getValue()).doesNotContain("YELLOW");
+        assertThat(prompt.getValue()).doesNotContain("lightheadedness");
+        verify(responses, never()).acceptTranscript(any(), any());
+        verify(responses, never()).acceptText(any(), any());
+        verify(sessions, never()).save(any());
     }
 
     @Test
@@ -124,10 +168,11 @@ class VoiceMonitoringServiceTest {
         MonitoringResponseService responses = mock(MonitoringResponseService.class);
         MockMultipartFile audio = new MockMultipartFile("audio", "note.txt", "text/plain", new byte[]{1});
 
-        assertThatThrownBy(() -> service(transcription, responses, properties(20)).process(3L, audio))
+        assertThatThrownBy(() -> service(transcription, responses, properties(20), sessions()).process(3L, audio))
                 .isInstanceOf(VoiceUploadException.class)
                 .hasMessage(VoiceUploadException.UNSUPPORTED);
         verify(transcription, never()).transcribe(
+                org.mockito.ArgumentMatchers.any(),
                 org.mockito.ArgumentMatchers.any(),
                 org.mockito.ArgumentMatchers.any(),
                 org.mockito.ArgumentMatchers.any());
@@ -137,8 +182,21 @@ class VoiceMonitoringServiceTest {
     private static VoiceMonitoringService service(
             AudioTranscriptionService transcription,
             MonitoringResponseService responses,
-            CareVoiceVoiceProperties properties) {
-        return new VoiceMonitoringService(new VoiceUploadValidator(properties), transcription, responses);
+            CareVoiceVoiceProperties properties,
+            MonitoringSessionRepository sessions) {
+        return new VoiceMonitoringService(new VoiceUploadValidator(properties), transcription, responses, sessions);
+    }
+
+    private static MonitoringSessionRepository sessions() {
+        return sessionWithQuestion(4L);
+    }
+
+    private static MonitoringSessionRepository sessionWithQuestion(Long sessionId) {
+        MonitoringSession session = new MonitoringSession(new Patient("Test", "Daily check-in"));
+        session.setNextQuestion("How are you feeling?");
+        MonitoringSessionRepository sessions = mock(MonitoringSessionRepository.class);
+        when(sessions.findById(sessionId)).thenReturn(Optional.of(session));
+        return sessions;
     }
 
     private static CareVoiceVoiceProperties properties(int maxFileSizeMb) {

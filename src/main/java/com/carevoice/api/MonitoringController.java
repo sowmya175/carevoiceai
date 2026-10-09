@@ -1,6 +1,9 @@
 package com.carevoice.api;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.carevoice.agent.ClinicalAgentResponse;
+import com.carevoice.domain.InputMode;
 import com.carevoice.domain.MonitoringSession;
 import com.carevoice.history.MonitoringResponseService;
 import com.carevoice.service.MonitoringAgentService;
@@ -21,18 +24,24 @@ public class MonitoringController {
     }
 
     @PostMapping("/patients/{patientId}/sessions")
+    @PreAuthorize("@patientAccess.ownsPatient(#patientId, authentication)")
     public SessionResponse start(@PathVariable Long patientId) {
         return SessionResponse.from(sessions.startSession(patientId));
     }
 
     @PostMapping("/sessions/{sessionId}/messages")
+    @PreAuthorize("@patientAccess.ownsSession(#sessionId, authentication)")
     public ClinicalAgentResponse message(@PathVariable Long sessionId,
                                          @Valid @RequestBody PatientMessageRequest request) {
+        if (request.inputMode() == InputMode.VOICE) {
+            return responses.acceptTranscript(sessionId, request.message());
+        }
         return responses.acceptText(sessionId, request.message());
     }
 
     public record PatientMessageRequest(
-            @NotBlank @JsonAlias("transcript") String message
+            @NotBlank @JsonAlias("transcript") String message,
+            InputMode inputMode
     ) {}
 
     public record SessionResponse(

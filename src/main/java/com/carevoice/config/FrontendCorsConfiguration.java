@@ -26,8 +26,8 @@ public class FrontendCorsConfiguration implements WebMvcConfigurer {
         }
         registry.addMapping("/api/**")
                 .allowedOrigins(allowedOrigins)
-                .allowedMethods("GET", "POST", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(false);
+                .allowedMethods("GET", "POST", "PUT", "OPTIONS")
+                .allowedHeaders("Accept", "Content-Type", "X-CSRF-TOKEN")
+                .allowCredentials(true);
     }
 }

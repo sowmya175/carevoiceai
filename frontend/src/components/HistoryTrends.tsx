@@ -38,11 +38,14 @@ function PainChart({ pain }: { pain: PainSummary }) {
   </svg>;
 }
 
-export function HistoryTrends({ data }: { data: PatientLongitudinalResponse }) {
+export function HistoryTrends({ data, eyebrow = "Your reported scores" }: {
+  data: PatientLongitudinalResponse;
+  eyebrow?: string;
+}) {
   const medicationLabel = (value: boolean | null) => value === null ? "Unknown" : value ? "Taken" : "Missed";
   return <>
     <section className="history-card pain-card" aria-label="Pain over time">
-      <p className="eyebrow">Your reported scores</p><h2>Pain over time</h2>
+      <p className="eyebrow">{eyebrow}</p><h2>Pain over time</h2>
       {data.pain.observations.length === 0 ? <p>No pain scores recorded in this history window.</p> : <>
         <dl className="pain-metrics">
           <div><dt>Latest</dt><dd>{data.pain.latestValue ?? "Unknown"}/10</dd></div>

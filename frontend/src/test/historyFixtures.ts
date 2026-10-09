@@ -26,7 +26,8 @@ export function historySummary(): PatientLongitudinalResponse {
     sessions: [
       { sessionId: 101, startedAt: "2026-10-01T13:00:00Z", status: "COMPLETED", riskLevel: "GREEN", turnCount: 4 },
       { sessionId: 102, startedAt: "2026-10-02T13:00:00Z", status: "COMPLETED", riskLevel: "YELLOW", turnCount: 5 },
-      { sessionId: 103, startedAt: "2026-10-03T13:00:00Z", status: "READY_FOR_REVIEW", riskLevel: "RED", turnCount: 2 },
+      { sessionId: 103, startedAt: "2026-10-03T13:00:00Z", status: "READY_FOR_REVIEW", riskLevel: "RED", turnCount: 2,
+        checkInDate: "2026-10-03", monitoringPlanName: "Post-Operative Recovery Demo" },
     ],
   };
 }
@@ -50,7 +51,8 @@ export function emptySummary(): PatientLongitudinalResponse {
 export function sessionHistory(sessionId = 103): SessionHistory {
   return {
     patientId: 7, sessionId, startedAt: "2026-10-03T13:00:00Z", status: "READY_FOR_REVIEW",
-    conversationComplete: true, currentQuestion: null,
+    conversationComplete: true, currentQuestion: null, checkInDate: "2026-10-03",
+    monitoringPlanName: "Post-Operative Recovery Demo",
     turns: [{ sequenceNumber: 1, timestamp: "2026-10-03T13:01:00Z", question: "How did you sleep?",
       patientResponse: "I kept waking up.", inputMode: "VOICE", clinicalNote: "PRIVATE CLINICAL NOTE", riskLevel: "RED" }],
   };

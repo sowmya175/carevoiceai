@@ -1,6 +1,8 @@
 package com.carevoice.agent;
 
 import com.carevoice.domain.MonitoringField;
+import com.carevoice.plan.DemoMonitoringPlans;
+import com.carevoice.plan.PlanField;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -44,5 +46,43 @@ class MissingInformationAnalyzerTest {
         CollectedFacts facts = new CollectedFacts(6, null, null, null, true, "normal", "good", null, null);
 
         assertThat(analyzer.missingFields(facts)).isEmpty();
+    }
+
+    @Test
+    void postOperativePlanRequiresOnlyItsFieldsIncludingTemperature() {
+        assertThat(analyzer.missingFields(CollectedFacts.unknown(), DemoMonitoringPlans.postOperative().questions()))
+                .containsExactly(
+                        MonitoringField.PAIN_SCORE,
+                        MonitoringField.MEDICATION_TAKEN,
+                        MonitoringField.TEMPERATURE,
+                        MonitoringField.APPETITE,
+                        MonitoringField.SLEEP_QUALITY);
+    }
+
+    @Test
+    void hypertensionPlanDoesNotRequireFieldsThatUsedToBeGlobal() {
+        assertThat(analyzer.missingFields(CollectedFacts.unknown(), DemoMonitoringPlans.hypertension().questions()))
+                .containsExactly(MonitoringField.MEDICATION_TAKEN, MonitoringField.SLEEP_QUALITY);
+    }
+
+    @Test
+    void dizzinessFollowUpComesBeforeRoutinePlanFields() {
+        CollectedFacts facts = new CollectedFacts(null, true, null, null, null, null, null, null, null);
+
+        assertThat(analyzer.missingFields(facts, DemoMonitoringPlans.postOperative().questions()))
+                .startsWith(MonitoringField.DIZZINESS_ONSET, MonitoringField.LOSS_OF_CONSCIOUSNESS);
+    }
+
+    @Test
+    void anExplicitPlanQuestionCanAskOnsetWhenDizzinessWasDenied() {
+        List<PlanField> plan = List.of(new PlanField(
+                MonitoringField.DIZZINESS_ONSET,
+                "When did the dizziness start?",
+                null,
+                1,
+                true));
+        CollectedFacts facts = new CollectedFacts(null, false, null, null, true, "good", "good", null, null);
+
+        assertThat(analyzer.missingFields(facts, plan)).containsExactly(MonitoringField.DIZZINESS_ONSET);
     }
 }

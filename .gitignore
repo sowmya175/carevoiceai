@@ -15,6 +15,11 @@ target/
 frontend/node_modules/
 frontend/dist/
 
+# Generated plan-tuning payloads and local run metadata. The canonical dataset stays tracked.
+training/plan-generation/provider-export/
+training/plan-generation/runs/
+service-account.json
+
 # Logs
 *.log
 

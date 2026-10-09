@@ -4,7 +4,11 @@ import com.carevoice.api.VoiceMonitoringController;
 import com.carevoice.config.ApiExceptionHandler;
 import com.carevoice.config.CareVoiceVoiceProperties;
 import com.carevoice.config.GroqConfiguration;
+import com.carevoice.domain.MonitoringField;
+import com.carevoice.domain.MonitoringSession;
+import com.carevoice.domain.Patient;
 import com.carevoice.history.MonitoringResponseService;
+import com.carevoice.repository.MonitoringSessionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,10 +21,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestClient;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -90,6 +97,41 @@ class GroqWhisperAudioTranscriptionServiceTest {
 
         assertThat(result.model()).isEqualTo("whisper-large-v3");
         assertThat(result.transcript()).isEqualTo("five");
+        recording.server.verify();
+    }
+
+    @Test
+    void contextualPromptIsSentAndPatientContextIsNot() {
+        CareVoiceVoiceProperties properties = properties("whisper-large-v3");
+        properties.setLanguage("en");
+        String prompt = TranscriptionPrompt.forTurn(
+                "On a scale from 0 to 10, how would you rate your pain today?",
+                MonitoringField.PAIN_SCORE);
+        RecordingClient recording = recordingClient(properties);
+        recording.server.expect(requestTo(BASE_URL + "/audio/transcriptions"))
+                .andExpect(request -> {
+                    String body = ((MockClientHttpRequest) request).getBodyAsString();
+                    assertThat(body).contains("whisper-large-v3");
+                    assertThat(body).doesNotContain("whisper-large-v3-turbo");
+                    assertThat(body).contains("name=\"language\"");
+                    assertThat(body).contains("en");
+                    assertThat(body).contains("name=\"temperature\"");
+                    assertThat(body).contains("0");
+                    assertThat(body).contains("Current question:");
+                    assertThat(body).contains("On a scale from 0 to 10, how would you rate your pain today?");
+                    assertThat(body).contains("Do not answer the question.");
+                    assertThat(body).contains("Do not infer missing words.");
+                    assertThat(body).contains("number from zero to ten");
+                    assertThat(body).doesNotContain("Ada Lovelace");
+                    assertThat(body).doesNotContain(CareVoiceVoiceProperties.DEFAULT_TRANSCRIPTION_PROMPT);
+                })
+                .andRespond(withSuccess("{\"text\":\"five\"}", MediaType.APPLICATION_JSON));
+
+        TranscriptionResult result = recording.service.transcribe(
+                new byte[]{1}, "answer.webm", "audio/webm", prompt);
+
+        assertThat(result.transcript()).isEqualTo("five");
+        assertThat(result.model()).isEqualTo("whisper-large-v3");
         recording.server.verify();
     }
 
@@ -166,10 +208,15 @@ class GroqWhisperAudioTranscriptionServiceTest {
             GroqWhisperAudioTranscriptionService transcription,
             MonitoringResponseService responses) {
         CareVoiceVoiceProperties properties = properties("whisper-large-v3-turbo");
+        MonitoringSession session = new MonitoringSession(new Patient("Test", "Daily monitoring"));
+        session.setNextQuestion("How are you feeling?");
+        MonitoringSessionRepository sessions = mock(MonitoringSessionRepository.class);
+        when(sessions.findById(org.mockito.ArgumentMatchers.any())).thenReturn(Optional.of(session));
         VoiceMonitoringService service = new VoiceMonitoringService(
                 new VoiceUploadValidator(properties),
                 transcription,
-                responses);
+                responses,
+                sessions);
         return MockMvcBuilders.standaloneSetup(new VoiceMonitoringController(service))
                 .setControllerAdvice(new ApiExceptionHandler(properties))
                 .build();
