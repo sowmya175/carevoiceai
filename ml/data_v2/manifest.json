@@ -1,0 +1,125 @@
+{
+  "datasetVersion": "carevoice-training-v2",
+  "builtFrom": "carevoice-training-v1 (ml/data) by ml/build_dataset_v2.py",
+  "labelRules": "ml/label_rules.py",
+  "changes": [
+    "COPD relabel: +WHEEZING +RESCUE_INHALER_USE on 20 existing examples",
+    "CV-SME-008 (CABG alone) moved from validation to train",
+    "11 new scenario groups x 5 paraphrases"
+  ],
+  "newGroups": [
+    {
+      "groupId": "CV-V2-031",
+      "split": "train",
+      "families": [
+        "CABG",
+        "HYPERTENSION"
+      ],
+      "purpose": "CABG + hypertension"
+    },
+    {
+      "groupId": "CV-V2-032",
+      "split": "train",
+      "families": [
+        "CABG",
+        "CHRONIC_CARDIAC"
+      ],
+      "purpose": "CABG + chronic cardiac"
+    },
+    {
+      "groupId": "CV-V2-033",
+      "split": "train",
+      "families": [
+        "CABG",
+        "ASTHMA"
+      ],
+      "purpose": "CABG + asthma"
+    },
+    {
+      "groupId": "CV-V2-034",
+      "split": "train",
+      "families": [
+        "CABG",
+        "HYPERTENSION",
+        "CHRONIC_CARDIAC"
+      ],
+      "purpose": "CABG triple"
+    },
+    {
+      "groupId": "CV-V2-035",
+      "split": "train",
+      "families": [
+        "COPD",
+        "KNEE_REPLACEMENT"
+      ],
+      "purpose": "COPD + knee"
+    },
+    {
+      "groupId": "CV-V2-036",
+      "split": "train",
+      "families": [
+        "COPD",
+        "SHOULDER_SURGERY"
+      ],
+      "purpose": "COPD + shoulder"
+    },
+    {
+      "groupId": "CV-V2-037",
+      "split": "validation",
+      "families": [
+        "COPD",
+        "CHRONIC_CARDIAC",
+        "HYPERTENSION"
+      ],
+      "purpose": "COPD triple (validation)"
+    },
+    {
+      "groupId": "CV-V2-038",
+      "split": "train",
+      "families": [
+        "ABDOMINAL_SURGERY",
+        "TYPE_2_DIABETES"
+      ],
+      "purpose": "abdominal + diabetes, no mobility"
+    },
+    {
+      "groupId": "CV-V2-039",
+      "split": "train",
+      "families": [
+        "OPEN_HEART_SURGERY",
+        "CHRONIC_CARDIAC"
+      ],
+      "purpose": "open-heart + cardiac, no mobility"
+    },
+    {
+      "groupId": "CV-V2-040",
+      "split": "train",
+      "families": [
+        "HEART_VALVE_SURGERY",
+        "HYPERTENSION"
+      ],
+      "purpose": "valve + hypertension, no mobility"
+    },
+    {
+      "groupId": "CV-V2-041",
+      "split": "train",
+      "families": [
+        "SHOULDER_SURGERY",
+        "CHRONIC_CARDIAC"
+      ],
+      "purpose": "shoulder + cardiac, no mobility"
+    }
+  ],
+  "counts": {
+    "train": 175,
+    "validation": 15,
+    "test": 15
+  },
+  "groupCounts": {
+    "train": 35,
+    "validation": 3,
+    "test": 3
+  },
+  "synthetic": true,
+  "clinicallyValidated": false
+}

@@ -1,0 +1,395 @@
+{
+  "benchmarkId": "carevoice-challenge-fresh-v1",
+  "frozen": true,
+  "createdOn": "2026-10-14",
+  "writtenBefore": "Dataset v2. Written before any v2 training data existed, so v2 was not designed around these cases.",
+  "doNotTrainOn": "Never add these cases, their condition combinations, or their wordings to any training/validation/test split.",
+  "labelSource": "Prototype CareVoice rules in ml/label_rules.py (v2: COPD includes WHEEZING and RESCUE_INHALER_USE). Not clinician-reviewed. Engineering benchmark only.",
+  "design": "Every case is a condition combination absent from v1 data; about half use condition wordings the model has never seen.",
+  "cases": [
+    {
+      "id": "FR-001",
+      "purpose": "CABG alone, unseen wording",
+      "families": [
+        "CABG"
+      ],
+      "conditions": [
+        {
+          "name": "Triple bypass recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "SHORTNESS_OF_BREATH",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT"
+      ]
+    },
+    {
+      "id": "FR-002",
+      "purpose": "CABG + COPD: new combination, both previously failing families",
+      "families": [
+        "CABG",
+        "COPD"
+      ],
+      "conditions": [
+        {
+          "name": "Coronary bypass recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Emphysema",
+          "category": "RESPIRATORY",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "SHORTNESS_OF_BREATH",
+        "COUGH_MUCUS_CHANGE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OXYGEN_SATURATION",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-003",
+      "purpose": "Valve surgery + COPD: new combination",
+      "families": [
+        "HEART_VALVE_SURGERY",
+        "COPD"
+      ],
+      "conditions": [
+        {
+          "name": "Mitral valve repair recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "COPD",
+          "category": "RESPIRATORY",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "SHORTNESS_OF_BREATH",
+        "COUGH_MUCUS_CHANGE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OXYGEN_SATURATION",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-004",
+      "purpose": "Asthma + diabetes: new combination, new wordings",
+      "families": [
+        "ASTHMA",
+        "TYPE_2_DIABETES"
+      ],
+      "conditions": [
+        {
+          "name": "Bronchial asthma",
+          "category": "RESPIRATORY",
+          "primary": true
+        },
+        {
+          "name": "Diabetes type II",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "SHORTNESS_OF_BREATH",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "RESCUE_INHALER_USE",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-005",
+      "purpose": "Hip + asthma: new combination",
+      "families": [
+        "HIP_REPLACEMENT",
+        "ASTHMA"
+      ],
+      "conditions": [
+        {
+          "name": "Hip arthroplasty recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Asthma",
+          "category": "RESPIRATORY",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "SHORTNESS_OF_BREATH",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "SWELLING",
+        "TEMPERATURE",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-006",
+      "purpose": "Shoulder triple; MOBILITY must stay off",
+      "families": [
+        "SHOULDER_SURGERY",
+        "HYPERTENSION",
+        "TYPE_2_DIABETES"
+      ],
+      "conditions": [
+        {
+          "name": "Rotator cuff repair recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Raised blood pressure",
+          "category": "HYPERTENSION",
+          "primary": false
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SHOULDER_ARM_FUNCTION",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "FR-007",
+      "purpose": "Abdominal + COPD: new combination",
+      "families": [
+        "ABDOMINAL_SURGERY",
+        "COPD"
+      ],
+      "conditions": [
+        {
+          "name": "Bowel resection recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Chronic obstructive pulmonary disease",
+          "category": "RESPIRATORY",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BOWEL_FUNCTION",
+        "SHORTNESS_OF_BREATH",
+        "COUGH_MUCUS_CHANGE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "NAUSEA_VOMITING",
+        "OXYGEN_SATURATION",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "TEMPERATURE",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-008",
+      "purpose": "Cardiac + asthma: new combination",
+      "families": [
+        "CHRONIC_CARDIAC",
+        "ASTHMA"
+      ],
+      "conditions": [
+        {
+          "name": "Heart failure",
+          "category": "CARDIAC",
+          "primary": true
+        },
+        {
+          "name": "Asthma",
+          "category": "RESPIRATORY",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "SHORTNESS_OF_BREATH",
+        "FATIGUE",
+        "MEDICATION_ADHERENCE",
+        "RESCUE_INHALER_USE",
+        "SWELLING",
+        "WEIGHT",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-009",
+      "purpose": "Knee + cardiac: new combination",
+      "families": [
+        "KNEE_REPLACEMENT",
+        "CHRONIC_CARDIAC"
+      ],
+      "conditions": [
+        {
+          "name": "Knee replacement recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Chronic heart condition",
+          "category": "CARDIAC",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "SHORTNESS_OF_BREATH",
+        "FATIGUE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT"
+      ]
+    },
+    {
+      "id": "FR-010",
+      "purpose": "Primary reversal: hypertension first, hip second",
+      "families": [
+        "HYPERTENSION",
+        "HIP_REPLACEMENT"
+      ],
+      "conditions": [
+        {
+          "name": "Hypertension",
+          "category": "HYPERTENSION",
+          "primary": true
+        },
+        {
+          "name": "Hip replacement recovery",
+          "category": "POST_OPERATIVE",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "FR-011",
+      "purpose": "Open-heart + asthma: new combination",
+      "families": [
+        "OPEN_HEART_SURGERY",
+        "ASTHMA"
+      ],
+      "conditions": [
+        {
+          "name": "Open-heart surgery recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Asthma",
+          "category": "RESPIRATORY",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "SHORTNESS_OF_BREATH",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "SWELLING",
+        "TEMPERATURE",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-012",
+      "purpose": "Wellness + COPD: new combination",
+      "families": [
+        "WELLNESS",
+        "COPD"
+      ],
+      "conditions": [
+        {
+          "name": "General wellness",
+          "category": "WELLNESS",
+          "primary": true
+        },
+        {
+          "name": "COPD",
+          "category": "RESPIRATORY",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "SHORTNESS_OF_BREATH",
+        "COUGH_MUCUS_CHANGE",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "OXYGEN_SATURATION",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "SLEEP_QUALITY",
+        "WHEEZING"
+      ]
+    }
+  ]
+}

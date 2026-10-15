@@ -148,7 +148,10 @@ def main():
     # ------------------------------------------------------------------
     results_dir = base / "results"
     results_dir.mkdir(exist_ok=True)
-    out_path = results_dir / f"challenge_{args.tag}.json"
+    # The original benchmark keeps its v1 file name; other challenge files are
+    # named after themselves, e.g. challenge_cases_fresh_v2.json.
+    stem = "challenge" if challenge_path.name == "challenge_cases.json" else challenge_path.stem
+    out_path = results_dir / f"{stem}_{args.tag}.json"
     with open(out_path, "w", encoding="utf-8") as file:
         json.dump({
             "modelTag": args.tag,

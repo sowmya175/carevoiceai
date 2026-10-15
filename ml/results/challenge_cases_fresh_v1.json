@@ -1,0 +1,309 @@
+{
+  "modelTag": "v1",
+  "benchmarkId": "carevoice-challenge-fresh-v1",
+  "challengeSha256": "d2b4db35e7e952a19f02b2b9ecc06c185cbd2a308391e5c222e6e91878e4da36",
+  "threshold": 0.5,
+  "metrics": {
+    "precision": 0.9795918367346939,
+    "recall": 0.8,
+    "f1": 0.8807339449541285,
+    "exact_set_match": 0.4166666666666667,
+    "hamming_loss": 0.09848484848484848
+  },
+  "metricsVariableFieldsOnly": {
+    "precision": 0.9767441860465116,
+    "recall": 0.7777777777777778,
+    "f1": 0.865979381443299,
+    "exact_set_match": 0.4166666666666667,
+    "hamming_loss": 0.10317460317460317
+  },
+  "cases": [
+    {
+      "id": "FR-001",
+      "conditions": "PRIMARY CONDITION: Triple bypass recovery CATEGORY: POST_OPERATIVE",
+      "exactMatch": false,
+      "missing": [
+        "SHORTNESS_OF_BREATH",
+        "WEIGHT"
+      ],
+      "extra": [
+        "MOBILITY"
+      ],
+      "errorProbabilities": {
+        "SHORTNESS_OF_BREATH": 0.329,
+        "MOBILITY": 0.546,
+        "WEIGHT": 0.274
+      },
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "FR-002",
+      "conditions": "PRIMARY CONDITION: Coronary bypass recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Emphysema CATEGORY: RESPIRATORY",
+      "exactMatch": false,
+      "missing": [
+        "COUGH_MUCUS_CHANGE",
+        "OXYGEN_SATURATION",
+        "RESCUE_INHALER_USE",
+        "WEIGHT",
+        "WHEEZING"
+      ],
+      "extra": [],
+      "errorProbabilities": {
+        "COUGH_MUCUS_CHANGE": 0.363,
+        "OXYGEN_SATURATION": 0.363,
+        "RESCUE_INHALER_USE": 0.318,
+        "WEIGHT": 0.292,
+        "WHEEZING": 0.318
+      },
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "FR-003",
+      "conditions": "PRIMARY CONDITION: Mitral valve repair recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: COPD CATEGORY: RESPIRATORY",
+      "exactMatch": false,
+      "missing": [
+        "RESCUE_INHALER_USE",
+        "WEIGHT",
+        "WHEEZING"
+      ],
+      "extra": [],
+      "errorProbabilities": {
+        "RESCUE_INHALER_USE": 0.206,
+        "WEIGHT": 0.465,
+        "WHEEZING": 0.206
+      },
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "COUGH_MUCUS_CHANGE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OXYGEN_SATURATION",
+        "PAIN_SCORE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "FR-004",
+      "conditions": "PRIMARY CONDITION: Bronchial asthma CATEGORY: RESPIRATORY | ADDITIONAL CONDITION: Diabetes type II CATEGORY: DIABETES",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "RESCUE_INHALER_USE",
+        "SHORTNESS_OF_BREATH",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-005",
+      "conditions": "PRIMARY CONDITION: Hip arthroplasty recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Asthma CATEGORY: RESPIRATORY",
+      "exactMatch": false,
+      "missing": [
+        "MOBILITY"
+      ],
+      "extra": [],
+      "errorProbabilities": {
+        "MOBILITY": 0.492
+      },
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-006",
+      "conditions": "PRIMARY CONDITION: Rotator cuff repair recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Raised blood pressure CATEGORY: HYPERTENSION | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES",
+      "exactMatch": false,
+      "missing": [
+        "SHOULDER_ARM_FUNCTION"
+      ],
+      "extra": [
+        "ACTIVITY_TOLERANCE"
+      ],
+      "errorProbabilities": {
+        "ACTIVITY_TOLERANCE": 0.556,
+        "SHOULDER_ARM_FUNCTION": 0.098
+      },
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "FR-007",
+      "conditions": "PRIMARY CONDITION: Bowel resection recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Chronic obstructive pulmonary disease CATEGORY: RESPIRATORY",
+      "exactMatch": false,
+      "missing": [
+        "APPETITE",
+        "BOWEL_FUNCTION",
+        "INCISION_STATUS",
+        "NAUSEA_VOMITING",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "TEMPERATURE",
+        "WHEEZING"
+      ],
+      "extra": [],
+      "errorProbabilities": {
+        "APPETITE": 0.359,
+        "BOWEL_FUNCTION": 0.205,
+        "INCISION_STATUS": 0.446,
+        "NAUSEA_VOMITING": 0.205,
+        "PAIN_SCORE": 0.437,
+        "RESCUE_INHALER_USE": 0.228,
+        "TEMPERATURE": 0.446,
+        "WHEEZING": 0.228
+      },
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "COUGH_MUCUS_CHANGE",
+        "MEDICATION_ADHERENCE",
+        "OXYGEN_SATURATION",
+        "SHORTNESS_OF_BREATH"
+      ]
+    },
+    {
+      "id": "FR-008",
+      "conditions": "PRIMARY CONDITION: Heart failure CATEGORY: CARDIAC | ADDITIONAL CONDITION: Asthma CATEGORY: RESPIRATORY",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "FATIGUE",
+        "MEDICATION_ADHERENCE",
+        "RESCUE_INHALER_USE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "WEIGHT",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-009",
+      "conditions": "PRIMARY CONDITION: Knee replacement recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Chronic heart condition CATEGORY: CARDIAC",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "FATIGUE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "PAIN_SCORE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT"
+      ]
+    },
+    {
+      "id": "FR-010",
+      "conditions": "PRIMARY CONDITION: Hypertension CATEGORY: HYPERTENSION | ADDITIONAL CONDITION: Hip replacement recovery CATEGORY: POST_OPERATIVE",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "FR-011",
+      "conditions": "PRIMARY CONDITION: Open-heart surgery recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Asthma CATEGORY: RESPIRATORY",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "RESCUE_INHALER_USE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "FR-012",
+      "conditions": "PRIMARY CONDITION: General wellness CATEGORY: WELLNESS | ADDITIONAL CONDITION: COPD CATEGORY: RESPIRATORY",
+      "exactMatch": false,
+      "missing": [
+        "ACTIVITY_TOLERANCE",
+        "RESCUE_INHALER_USE",
+        "SHORTNESS_OF_BREATH",
+        "WHEEZING"
+      ],
+      "extra": [],
+      "errorProbabilities": {
+        "ACTIVITY_TOLERANCE": 0.353,
+        "SHORTNESS_OF_BREATH": 0.423,
+        "RESCUE_INHALER_USE": 0.208,
+        "WHEEZING": 0.208
+      },
+      "predicted": [
+        "APPETITE",
+        "COUGH_MUCUS_CHANGE",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "OXYGEN_SATURATION",
+        "PAIN_SCORE",
+        "SLEEP_QUALITY"
+      ]
+    }
+  ],
+  "caveat": "Prototype CareVoice rules in ml/label_rules.py (v2: COPD includes WHEEZING and RESCUE_INHALER_USE). Not clinician-reviewed. Engineering benchmark only."
+}

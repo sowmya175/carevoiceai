@@ -1,0 +1,117 @@
+{
+  "datasetVersion": "carevoice-training-v1",
+  "approvalStatus": "USER_APPROVED_FOR_PHASE1_PROTOTYPE",
+  "clinicalValidation": "NOT_CLINICALLY_VALIDATED",
+  "fields": [
+    {
+      "fieldCode": "ACTIVITY_TOLERANCE",
+      "displayName": "Activity tolerance",
+      "approvedQuestionText": "Were you able to complete the activity level your care team currently recommends?"
+    },
+    {
+      "fieldCode": "APPETITE",
+      "displayName": "Appetite",
+      "approvedQuestionText": "How has your appetite been today?"
+    },
+    {
+      "fieldCode": "BLOOD_GLUCOSE",
+      "displayName": "Blood glucose",
+      "approvedQuestionText": "What was your blood glucose reading today, if you were asked to monitor it?"
+    },
+    {
+      "fieldCode": "BLOOD_PRESSURE",
+      "displayName": "Blood pressure",
+      "approvedQuestionText": "What was your blood pressure reading today, if you were asked to monitor it?"
+    },
+    {
+      "fieldCode": "BOWEL_FUNCTION",
+      "displayName": "Bowel function",
+      "approvedQuestionText": "Have you noticed any new difficulty with bowel movements or passing gas today?"
+    },
+    {
+      "fieldCode": "SHORTNESS_OF_BREATH",
+      "displayName": "Breathing / shortness of breath",
+      "approvedQuestionText": "Have you noticed any new or worsening shortness of breath today?"
+    },
+    {
+      "fieldCode": "COUGH_MUCUS_CHANGE",
+      "displayName": "Cough / mucus change",
+      "approvedQuestionText": "Has your cough or mucus changed from your usual pattern today?"
+    },
+    {
+      "fieldCode": "FATIGUE",
+      "displayName": "Fatigue / energy",
+      "approvedQuestionText": "How would you rate your energy or fatigue today?"
+    },
+    {
+      "fieldCode": "INCISION_STATUS",
+      "displayName": "Incision / wound changes",
+      "approvedQuestionText": "Have you noticed any new redness, drainage, opening, or other change around your incision today?"
+    },
+    {
+      "fieldCode": "MEDICATION_ADHERENCE",
+      "displayName": "Medication adherence",
+      "approvedQuestionText": "Have you taken your prescribed medications today as directed?"
+    },
+    {
+      "fieldCode": "MOBILITY",
+      "displayName": "Mobility",
+      "approvedQuestionText": "How easy or difficult was it to move around today compared with yesterday?"
+    },
+    {
+      "fieldCode": "NAUSEA_VOMITING",
+      "displayName": "Nausea / vomiting",
+      "approvedQuestionText": "Have you had nausea or vomiting today?"
+    },
+    {
+      "fieldCode": "OVERALL_WELLBEING",
+      "displayName": "Overall wellbeing",
+      "approvedQuestionText": "Overall, how are you feeling today compared with yesterday?"
+    },
+    {
+      "fieldCode": "OXYGEN_SATURATION",
+      "displayName": "Oxygen saturation",
+      "approvedQuestionText": "What was your oxygen saturation today, if you were asked to monitor it?"
+    },
+    {
+      "fieldCode": "PAIN_SCORE",
+      "displayName": "Pain",
+      "approvedQuestionText": "How would you rate your pain today on a 0\u201310 scale?"
+    },
+    {
+      "fieldCode": "RESCUE_INHALER_USE",
+      "displayName": "Rescue inhaler use",
+      "approvedQuestionText": "Did you need your rescue inhaler more often than usual today?"
+    },
+    {
+      "fieldCode": "SHOULDER_ARM_FUNCTION",
+      "displayName": "Shoulder / arm function",
+      "approvedQuestionText": "How difficult was it to complete the arm or shoulder activities your care team has allowed today?"
+    },
+    {
+      "fieldCode": "SLEEP_QUALITY",
+      "displayName": "Sleep",
+      "approvedQuestionText": "How well did you sleep last night?"
+    },
+    {
+      "fieldCode": "SWELLING",
+      "displayName": "Swelling",
+      "approvedQuestionText": "Have you noticed any new or increased swelling today?"
+    },
+    {
+      "fieldCode": "TEMPERATURE",
+      "displayName": "Temperature",
+      "approvedQuestionText": "What was your temperature today, if you were asked to check it?"
+    },
+    {
+      "fieldCode": "WEIGHT",
+      "displayName": "Weight",
+      "approvedQuestionText": "What was your weight today, if you were asked to track it?"
+    },
+    {
+      "fieldCode": "WHEEZING",
+      "displayName": "Wheezing",
+      "approvedQuestionText": "Have you had more wheezing than usual today?"
+    }
+  ]
+}

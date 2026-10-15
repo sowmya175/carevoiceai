@@ -1,0 +1,230 @@
+{
+  "modelTag": "v2",
+  "modelType": "TF-IDF (1-2 grams) + OneVsRest LogisticRegression(class_weight=balanced)",
+  "trainedAt": "2026-10-15T02:46:59+00:00",
+  "threshold": 0.4,
+  "thresholdSelectedOn": "validation",
+  "monitoringFields": [
+    "ACTIVITY_TOLERANCE",
+    "APPETITE",
+    "BLOOD_GLUCOSE",
+    "BLOOD_PRESSURE",
+    "BOWEL_FUNCTION",
+    "SHORTNESS_OF_BREATH",
+    "COUGH_MUCUS_CHANGE",
+    "FATIGUE",
+    "INCISION_STATUS",
+    "MEDICATION_ADHERENCE",
+    "MOBILITY",
+    "NAUSEA_VOMITING",
+    "OVERALL_WELLBEING",
+    "OXYGEN_SATURATION",
+    "PAIN_SCORE",
+    "RESCUE_INHALER_USE",
+    "SHOULDER_ARM_FUNCTION",
+    "SLEEP_QUALITY",
+    "SWELLING",
+    "TEMPERATURE",
+    "WEIGHT",
+    "WHEEZING"
+  ],
+  "constantTrainingFields": [
+    "MEDICATION_ADHERENCE"
+  ],
+  "counts": {
+    "train": 175,
+    "validation": 15,
+    "test": 15,
+    "trainGroups": 35,
+    "validationGroups": 3,
+    "testGroups": 3
+  },
+  "dataFiles": {
+    "train": {
+      "path": "ml\\data_v2\\train.jsonl",
+      "sha256": "12576f1630749f7eb2e2c00ea567b3b5a878a9f27686aa53c623724ed49cc6ad"
+    },
+    "validation": {
+      "path": "ml\\data_v2\\validation.jsonl",
+      "sha256": "674c7acf37cec70116273af570e7e93fba319ffd376a6eeb7545a74a3f89934a"
+    },
+    "test": {
+      "path": "ml\\data_v2\\test.jsonl",
+      "sha256": "f14ecf91b2b4b235a4bd49cac053cc0d9d9ddf9dccb055a1f544e7e7b08bf9ad"
+    },
+    "catalog": {
+      "path": "ml\\data_v2\\question_catalog.json",
+      "sha256": "2b3c94fab45efc34745d2a3c437fcc5f5abd9683c32363b8205681f7a5fa15fc"
+    }
+  },
+  "metrics": {
+    "validation": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    },
+    "test": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    },
+    "testVariableFieldsOnly": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    }
+  },
+  "thresholdSearch": [
+    {
+      "threshold": 0.1,
+      "precision": 0.3514376996805112,
+      "recall": 1.0,
+      "f1": 0.5200945626477541,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.6151515151515151
+    },
+    {
+      "threshold": 0.15,
+      "precision": 0.3793103448275862,
+      "recall": 1.0,
+      "f1": 0.55,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.5454545454545454
+    },
+    {
+      "threshold": 0.2,
+      "precision": 0.48034934497816595,
+      "recall": 1.0,
+      "f1": 0.6489675516224189,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.3606060606060606
+    },
+    {
+      "threshold": 0.25,
+      "precision": 0.6626506024096386,
+      "recall": 1.0,
+      "f1": 0.7971014492753623,
+      "exact_set_match": 0.13333333333333333,
+      "hamming_loss": 0.1696969696969697
+    },
+    {
+      "threshold": 0.3,
+      "precision": 0.8148148148148148,
+      "recall": 1.0,
+      "f1": 0.8979591836734694,
+      "exact_set_match": 0.5333333333333333,
+      "hamming_loss": 0.07575757575757576
+    },
+    {
+      "threshold": 0.35,
+      "precision": 0.9401709401709402,
+      "recall": 1.0,
+      "f1": 0.9691629955947136,
+      "exact_set_match": 0.7333333333333333,
+      "hamming_loss": 0.021212121212121213
+    },
+    {
+      "threshold": 0.4,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    },
+    {
+      "threshold": 0.45,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    },
+    {
+      "threshold": 0.5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    },
+    {
+      "threshold": 0.55,
+      "precision": 1.0,
+      "recall": 0.9636363636363636,
+      "f1": 0.9814814814814815,
+      "exact_set_match": 0.7333333333333333,
+      "hamming_loss": 0.012121212121212121
+    },
+    {
+      "threshold": 0.6,
+      "precision": 1.0,
+      "recall": 0.8909090909090909,
+      "f1": 0.9423076923076923,
+      "exact_set_match": 0.3333333333333333,
+      "hamming_loss": 0.03636363636363636
+    },
+    {
+      "threshold": 0.65,
+      "precision": 1.0,
+      "recall": 0.8363636363636363,
+      "f1": 0.9108910891089109,
+      "exact_set_match": 0.3333333333333333,
+      "hamming_loss": 0.05454545454545454
+    },
+    {
+      "threshold": 0.7,
+      "precision": 1.0,
+      "recall": 0.7,
+      "f1": 0.8235294117647058,
+      "exact_set_match": 0.3333333333333333,
+      "hamming_loss": 0.1
+    },
+    {
+      "threshold": 0.75,
+      "precision": 1.0,
+      "recall": 0.509090909090909,
+      "f1": 0.6746987951807228,
+      "exact_set_match": 0.3333333333333333,
+      "hamming_loss": 0.16363636363636364
+    },
+    {
+      "threshold": 0.8,
+      "precision": 1.0,
+      "recall": 0.41818181818181815,
+      "f1": 0.5897435897435898,
+      "exact_set_match": 0.13333333333333333,
+      "hamming_loss": 0.19393939393939394
+    },
+    {
+      "threshold": 0.85,
+      "precision": 1.0,
+      "recall": 0.37272727272727274,
+      "f1": 0.543046357615894,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.20909090909090908
+    },
+    {
+      "threshold": 0.9,
+      "precision": 1.0,
+      "recall": 0.23636363636363636,
+      "f1": 0.38235294117647056,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.2545454545454545
+    }
+  ],
+  "environment": {
+    "python": "3.12.10",
+    "scikit-learn": "1.6.1",
+    "numpy": "2.1.3",
+    "scipy": "1.14.1",
+    "joblib": "1.4.2"
+  },
+  "randomSeed": 42,
+  "caveat": "Synthetic prototype labels; not clinician-validated. Engineering benchmark only."
+}

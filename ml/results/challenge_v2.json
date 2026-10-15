@@ -1,0 +1,225 @@
+{
+  "modelTag": "v2",
+  "benchmarkId": "carevoice-challenge-v1",
+  "challengeSha256": "0e7f8e25438408cb6ea76b4dcb34fc5fc2f3d848f5b9cbd950d14796c261365e",
+  "threshold": 0.4,
+  "metrics": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "exact_set_match": 1.0,
+    "hamming_loss": 0.0
+  },
+  "metricsVariableFieldsOnly": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "exact_set_match": 1.0,
+    "hamming_loss": 0.0
+  },
+  "cases": [
+    {
+      "id": "CH-001",
+      "conditions": "PRIMARY CONDITION: CABG recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT"
+      ]
+    },
+    {
+      "id": "CH-002",
+      "conditions": "PRIMARY CONDITION: Total knee replacement recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Hypertension CATEGORY: HYPERTENSION",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "CH-003",
+      "conditions": "PRIMARY CONDITION: Heart valve surgery recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Hypertension CATEGORY: HYPERTENSION | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT"
+      ]
+    },
+    {
+      "id": "CH-004",
+      "conditions": "PRIMARY CONDITION: COPD CATEGORY: RESPIRATORY | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "COUGH_MUCUS_CHANGE",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "OXYGEN_SATURATION",
+        "RESCUE_INHALER_USE",
+        "SHORTNESS_OF_BREATH",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "CH-005",
+      "conditions": "PRIMARY CONDITION: Abdominal surgery recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Hypertension CATEGORY: HYPERTENSION",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "APPETITE",
+        "BLOOD_PRESSURE",
+        "BOWEL_FUNCTION",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "NAUSEA_VOMITING",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "CH-006",
+      "conditions": "PRIMARY CONDITION: Total hip replacement recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "CH-007",
+      "conditions": "PRIMARY CONDITION: Shoulder surgery recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SHOULDER_ARM_FUNCTION",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    },
+    {
+      "id": "CH-008",
+      "conditions": "PRIMARY CONDITION: CABG recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Hypertension CATEGORY: HYPERTENSION | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "TEMPERATURE",
+        "WEIGHT"
+      ]
+    },
+    {
+      "id": "CH-009",
+      "conditions": "PRIMARY CONDITION: COPD CATEGORY: RESPIRATORY | ADDITIONAL CONDITION: Hypertension CATEGORY: HYPERTENSION",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_PRESSURE",
+        "COUGH_MUCUS_CHANGE",
+        "MEDICATION_ADHERENCE",
+        "OVERALL_WELLBEING",
+        "OXYGEN_SATURATION",
+        "RESCUE_INHALER_USE",
+        "SHORTNESS_OF_BREATH",
+        "WHEEZING"
+      ]
+    },
+    {
+      "id": "CH-010",
+      "conditions": "PRIMARY CONDITION: Total knee replacement recovery CATEGORY: POST_OPERATIVE | ADDITIONAL CONDITION: Type 2 diabetes CATEGORY: DIABETES | ADDITIONAL CONDITION: Hypertension CATEGORY: HYPERTENSION",
+      "exactMatch": true,
+      "missing": [],
+      "extra": [],
+      "errorProbabilities": {},
+      "predicted": [
+        "ACTIVITY_TOLERANCE",
+        "APPETITE",
+        "BLOOD_GLUCOSE",
+        "BLOOD_PRESSURE",
+        "INCISION_STATUS",
+        "MEDICATION_ADHERENCE",
+        "MOBILITY",
+        "OVERALL_WELLBEING",
+        "PAIN_SCORE",
+        "SWELLING",
+        "TEMPERATURE"
+      ]
+    }
+  ],
+  "caveat": "Prototype CareVoice condition-to-field rules. Not clinician-reviewed. Engineering benchmark only."
+}
