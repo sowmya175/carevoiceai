@@ -1,0 +1,304 @@
+{
+  "benchmarkId": "carevoice-challenge-v1",
+  "frozen": true,
+  "frozenFrom": "Kaggle notebook (Oct 12, 2026), cell 'RECOVER CHALLENGE PATIENTS + EXPECTED LABELS'",
+  "doNotTrainOn": "Never copy these cases, or paraphrases of them, into any training/validation/test split. They are the fixed yardstick for comparing v1 and v2.",
+  "labelSource": "Prototype CareVoice condition-to-field rules. Not clinician-reviewed. Engineering benchmark only.",
+  "v1Reference": {
+    "precision": 0.9792,
+    "recall": 0.9216,
+    "f1": 0.9495,
+    "exact_set_match": 0.6,
+    "hamming_loss": 0.0455,
+    "threshold": 0.5
+  },
+  "cases": [
+    {
+      "id": "CH-001",
+      "conditions": [
+        {
+          "name": "CABG recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "ACTIVITY_TOLERANCE",
+        "WEIGHT",
+        "BLOOD_GLUCOSE",
+        "APPETITE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-002",
+      "conditions": [
+        {
+          "name": "Total knee replacement recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Hypertension",
+          "category": "HYPERTENSION",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "SWELLING",
+        "MOBILITY",
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_PRESSURE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-003",
+      "conditions": [
+        {
+          "name": "Heart valve surgery recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Hypertension",
+          "category": "HYPERTENSION",
+          "primary": false
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "ACTIVITY_TOLERANCE",
+        "WEIGHT",
+        "BLOOD_PRESSURE",
+        "BLOOD_GLUCOSE",
+        "APPETITE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-004",
+      "conditions": [
+        {
+          "name": "COPD",
+          "category": "RESPIRATORY",
+          "primary": true
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "SHORTNESS_OF_BREATH",
+        "WHEEZING",
+        "RESCUE_INHALER_USE",
+        "COUGH_MUCUS_CHANGE",
+        "OXYGEN_SATURATION",
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_GLUCOSE",
+        "APPETITE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-005",
+      "conditions": [
+        {
+          "name": "Abdominal surgery recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Hypertension",
+          "category": "HYPERTENSION",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "APPETITE",
+        "NAUSEA_VOMITING",
+        "BOWEL_FUNCTION",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "BLOOD_PRESSURE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-006",
+      "conditions": [
+        {
+          "name": "Total hip replacement recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "SWELLING",
+        "MOBILITY",
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_GLUCOSE",
+        "APPETITE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-007",
+      "conditions": [
+        {
+          "name": "Shoulder surgery recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "SWELLING",
+        "SHOULDER_ARM_FUNCTION",
+        "BLOOD_GLUCOSE",
+        "APPETITE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-008",
+      "conditions": [
+        {
+          "name": "CABG recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Hypertension",
+          "category": "HYPERTENSION",
+          "primary": false
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "SHORTNESS_OF_BREATH",
+        "SWELLING",
+        "ACTIVITY_TOLERANCE",
+        "WEIGHT",
+        "BLOOD_PRESSURE",
+        "BLOOD_GLUCOSE",
+        "APPETITE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-009",
+      "conditions": [
+        {
+          "name": "COPD",
+          "category": "RESPIRATORY",
+          "primary": true
+        },
+        {
+          "name": "Hypertension",
+          "category": "HYPERTENSION",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "SHORTNESS_OF_BREATH",
+        "WHEEZING",
+        "RESCUE_INHALER_USE",
+        "COUGH_MUCUS_CHANGE",
+        "OXYGEN_SATURATION",
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_PRESSURE",
+        "OVERALL_WELLBEING"
+      ]
+    },
+    {
+      "id": "CH-010",
+      "conditions": [
+        {
+          "name": "Total knee replacement recovery",
+          "category": "POST_OPERATIVE",
+          "primary": true
+        },
+        {
+          "name": "Type 2 diabetes",
+          "category": "DIABETES",
+          "primary": false
+        },
+        {
+          "name": "Hypertension",
+          "category": "HYPERTENSION",
+          "primary": false
+        }
+      ],
+      "expectedFields": [
+        "MEDICATION_ADHERENCE",
+        "PAIN_SCORE",
+        "INCISION_STATUS",
+        "TEMPERATURE",
+        "SWELLING",
+        "MOBILITY",
+        "ACTIVITY_TOLERANCE",
+        "BLOOD_GLUCOSE",
+        "BLOOD_PRESSURE",
+        "APPETITE",
+        "OVERALL_WELLBEING"
+      ]
+    }
+  ]
+}

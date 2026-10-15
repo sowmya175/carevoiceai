@@ -1,0 +1,7 @@
+# Pinned to the versions the Kaggle v1 notebook used (scikit-learn 1.6.1,
+# NumPy 2.1.3), so local results line up with the Kaggle numbers.
+# These have wheels for Python 3.10 - 3.13 on Windows.
+scikit-learn==1.6.1
+numpy==2.1.3
+scipy==1.14.1
+joblib==1.4.2

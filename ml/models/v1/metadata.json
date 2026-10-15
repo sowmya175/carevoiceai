@@ -1,0 +1,230 @@
+{
+  "modelTag": "v1",
+  "modelType": "TF-IDF (1-2 grams) + OneVsRest LogisticRegression(class_weight=balanced)",
+  "trainedAt": "2026-10-14T22:17:08+00:00",
+  "threshold": 0.5,
+  "thresholdSelectedOn": "validation",
+  "monitoringFields": [
+    "ACTIVITY_TOLERANCE",
+    "APPETITE",
+    "BLOOD_GLUCOSE",
+    "BLOOD_PRESSURE",
+    "BOWEL_FUNCTION",
+    "SHORTNESS_OF_BREATH",
+    "COUGH_MUCUS_CHANGE",
+    "FATIGUE",
+    "INCISION_STATUS",
+    "MEDICATION_ADHERENCE",
+    "MOBILITY",
+    "NAUSEA_VOMITING",
+    "OVERALL_WELLBEING",
+    "OXYGEN_SATURATION",
+    "PAIN_SCORE",
+    "RESCUE_INHALER_USE",
+    "SHOULDER_ARM_FUNCTION",
+    "SLEEP_QUALITY",
+    "SWELLING",
+    "TEMPERATURE",
+    "WEIGHT",
+    "WHEEZING"
+  ],
+  "constantTrainingFields": [
+    "MEDICATION_ADHERENCE"
+  ],
+  "counts": {
+    "train": 120,
+    "validation": 15,
+    "test": 15,
+    "trainGroups": 24,
+    "validationGroups": 3,
+    "testGroups": 3
+  },
+  "dataFiles": {
+    "train": {
+      "path": "C:\\Users\\sowmy\\carevoice-ai\\ml\\data\\train.jsonl",
+      "sha256": "0aa0126e2700cfecf99f26657a1087b08a5c1dcb4e5d0fa6dcab0667c00b985f"
+    },
+    "validation": {
+      "path": "C:\\Users\\sowmy\\carevoice-ai\\ml\\data\\validation.jsonl",
+      "sha256": "e5b760f09ebe6ea6e77aaa46d12dd3bdb1ffbaa79366adc6804852ae038ccb13"
+    },
+    "test": {
+      "path": "C:\\Users\\sowmy\\carevoice-ai\\ml\\data\\test.jsonl",
+      "sha256": "b9fc0430eac87ab50a56533d8467ff050cc58857189c7b9c2b84276517e5ca3a"
+    },
+    "catalog": {
+      "path": "C:\\Users\\sowmy\\carevoice-ai\\ml\\data\\question_catalog.json",
+      "sha256": "2b3c94fab45efc34745d2a3c437fcc5f5abd9683c32363b8205681f7a5fa15fc"
+    }
+  },
+  "metrics": {
+    "validation": {
+      "precision": 0.9753086419753086,
+      "recall": 0.8777777777777778,
+      "f1": 0.9239766081871345,
+      "exact_set_match": 0.6666666666666666,
+      "hamming_loss": 0.03939393939393939
+    },
+    "test": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    },
+    "testVariableFieldsOnly": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_set_match": 1.0,
+      "hamming_loss": 0.0
+    }
+  },
+  "thresholdSearch": [
+    {
+      "threshold": 0.1,
+      "precision": 0.28213166144200624,
+      "recall": 1.0,
+      "f1": 0.4400977995110024,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.693939393939394
+    },
+    {
+      "threshold": 0.15,
+      "precision": 0.32967032967032966,
+      "recall": 1.0,
+      "f1": 0.49586776859504134,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.5545454545454546
+    },
+    {
+      "threshold": 0.2,
+      "precision": 0.4072398190045249,
+      "recall": 1.0,
+      "f1": 0.5787781350482315,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.396969696969697
+    },
+    {
+      "threshold": 0.25,
+      "precision": 0.5172413793103449,
+      "recall": 1.0,
+      "f1": 0.6818181818181818,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.2545454545454545
+    },
+    {
+      "threshold": 0.3,
+      "precision": 0.5375,
+      "recall": 0.9555555555555556,
+      "f1": 0.688,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.23636363636363636
+    },
+    {
+      "threshold": 0.35,
+      "precision": 0.6507936507936508,
+      "recall": 0.9111111111111111,
+      "f1": 0.7592592592592593,
+      "exact_set_match": 0.26666666666666666,
+      "hamming_loss": 0.15757575757575756
+    },
+    {
+      "threshold": 0.4,
+      "precision": 0.81,
+      "recall": 0.9,
+      "f1": 0.8526315789473684,
+      "exact_set_match": 0.3333333333333333,
+      "hamming_loss": 0.08484848484848485
+    },
+    {
+      "threshold": 0.45,
+      "precision": 0.9195402298850575,
+      "recall": 0.8888888888888888,
+      "f1": 0.903954802259887,
+      "exact_set_match": 0.5333333333333333,
+      "hamming_loss": 0.051515151515151514
+    },
+    {
+      "threshold": 0.5,
+      "precision": 0.9753086419753086,
+      "recall": 0.8777777777777778,
+      "f1": 0.9239766081871345,
+      "exact_set_match": 0.6666666666666666,
+      "hamming_loss": 0.03939393939393939
+    },
+    {
+      "threshold": 0.55,
+      "precision": 1.0,
+      "recall": 0.8333333333333334,
+      "f1": 0.9090909090909091,
+      "exact_set_match": 0.4666666666666667,
+      "hamming_loss": 0.045454545454545456
+    },
+    {
+      "threshold": 0.6,
+      "precision": 1.0,
+      "recall": 0.7666666666666667,
+      "f1": 0.8679245283018868,
+      "exact_set_match": 0.3333333333333333,
+      "hamming_loss": 0.06363636363636363
+    },
+    {
+      "threshold": 0.65,
+      "precision": 1.0,
+      "recall": 0.7222222222222222,
+      "f1": 0.8387096774193549,
+      "exact_set_match": 0.3333333333333333,
+      "hamming_loss": 0.07575757575757576
+    },
+    {
+      "threshold": 0.7,
+      "precision": 1.0,
+      "recall": 0.6888888888888889,
+      "f1": 0.8157894736842105,
+      "exact_set_match": 0.26666666666666666,
+      "hamming_loss": 0.08484848484848485
+    },
+    {
+      "threshold": 0.75,
+      "precision": 1.0,
+      "recall": 0.5888888888888889,
+      "f1": 0.7412587412587412,
+      "exact_set_match": 0.13333333333333333,
+      "hamming_loss": 0.11212121212121212
+    },
+    {
+      "threshold": 0.8,
+      "precision": 1.0,
+      "recall": 0.5222222222222223,
+      "f1": 0.6861313868613139,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.1303030303030303
+    },
+    {
+      "threshold": 0.85,
+      "precision": 1.0,
+      "recall": 0.45555555555555555,
+      "f1": 0.6259541984732825,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.1484848484848485
+    },
+    {
+      "threshold": 0.9,
+      "precision": 1.0,
+      "recall": 0.23333333333333334,
+      "f1": 0.3783783783783784,
+      "exact_set_match": 0.0,
+      "hamming_loss": 0.20909090909090908
+    }
+  ],
+  "environment": {
+    "python": "3.12.10",
+    "scikit-learn": "1.6.1",
+    "numpy": "2.1.3",
+    "scipy": "1.14.1",
+    "joblib": "1.4.2"
+  },
+  "randomSeed": 42,
+  "caveat": "Synthetic prototype labels; not clinician-validated. Engineering benchmark only."
+}

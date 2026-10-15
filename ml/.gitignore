@@ -1,0 +1,7 @@
+# Local virtual environment and Python cache
+.venv/
+__pycache__/
+
+# Binary model files are reproducible from train_classifier.py.
+# metadata.json and results/ stay tracked so metrics are versioned.
+models/**/*.joblib
